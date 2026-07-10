@@ -1,0 +1,988 @@
+/* ============================================================
+   Cross Traffic Does Not Stop — Personal Site
+   Brand: Midnight Navy / Warm Ivory / Muted Gold / Slate Blue
+   Type: Libre Baskerville (headlines) + Newsreader (body)
+   ============================================================ */
+
+/* --- Reset & Base ----------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --navy:   #111C2E;
+  --slate:  #314A67;
+  --gold:   #B59A5B;
+  /* Darker gold for small text on light backgrounds — same family,
+     passes WCAG AA where #B59A5B (2.4:1 on ivory) does not. */
+  --gold-deep: #715C2A;
+  --ivory:  #F4F1EA;
+  --charcoal: #222222;
+  --mist:   #D7DCE2;
+
+  --col-width: 720px;
+  --pad-x: clamp(1.5rem, 5vw, 3rem);
+  --pad-section: clamp(4rem, 8vw, 7rem);
+  --leading: 1.75;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 18px;
+}
+
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1rem;
+  line-height: var(--leading);
+  color: var(--charcoal);
+  background: var(--ivory);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Typography ------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--navy);
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--slate);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-bottom: 1.25rem;
+  max-width: 65ch;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--slate);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--gold-deep);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* --- Under-construction banner ------------------------------ */
+
+.construction-banner {
+  background: var(--gold);
+  color: var(--navy);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.6rem var(--pad-x);
+  letter-spacing: 0.03em;
+}
+
+/* --- Layout utility --------------------------------------- */
+
+.inner {
+  max-width: var(--col-width);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+.section {
+  padding: var(--pad-section) 0;
+}
+
+.section--light {
+  background: var(--ivory);
+}
+
+.section--off {
+  background: #EDEAE2;
+}
+
+/* --- Section label ---------------------------------------- */
+
+.section-label {
+  display: block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 1.5rem;
+}
+
+.section-label--on-dark {
+  color: var(--gold);
+}
+
+/* --- Divider ---------------------------------------------- */
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--mist);
+  margin: 0;
+}
+
+/* Motif dividers — small brand ornaments between sections.
+   Background blends the two adjacent section colors so there's no seam. */
+.motif-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.1rem 0;
+  background: var(--ivory);
+}
+
+.motif-divider--to-off {
+  background: linear-gradient(to bottom, var(--ivory), #EDEAE2);
+}
+
+.motif-divider--to-light {
+  background: linear-gradient(to bottom, #EDEAE2, var(--ivory));
+}
+
+.motif-divider svg {
+  display: block;
+}
+
+/* ============================================================
+   HERO — dark, typographic only
+   ============================================================ */
+
+.hero {
+  position: relative;
+  background: var(--navy);
+  color: var(--ivory);
+  padding: clamp(5rem, 12vw, 9rem) 0 clamp(4rem, 9vw, 7rem);
+  overflow: hidden;
+}
+
+/* Constellation motif — very subtle background decoration */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 340px;
+  height: 340px;
+  background-image: url('assets/constellation.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* Grid motif — bottom left corner */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 200px;
+  height: 200px;
+  background-image: url('assets/grid.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.hero__inner {
+  max-width: var(--col-width);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+  position: relative;
+  z-index: 1;
+}
+
+.hero__eyebrow {
+  display: block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.75rem;
+}
+
+.hero__name {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 700;
+  color: var(--ivory);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.hero__title {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--mist);
+  margin-bottom: 2.25rem;
+  line-height: 1.5;
+}
+
+.hero__tagline {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  font-weight: 400;
+  color: var(--ivory);
+  line-height: 1.55;
+  max-width: 560px;
+  opacity: 0.9;
+}
+
+.hero__nav {
+  margin-top: 3rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero__nav a {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding: 0.5rem 0 calc(0.5rem + 2px);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.hero__nav a:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+
+.about__body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.about__body p + p {
+  margin-top: 1.1rem;
+}
+
+.about__thesis {
+  margin-top: 2rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--gold);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--navy);
+  line-height: 1.65;
+}
+
+/* Draft-copy block — visibly provisional, pending Anna's review */
+
+.draft-block {
+  margin-top: 2.5rem;
+  padding: 1.5rem 1.75rem;
+  border: 2px dashed var(--gold-deep);
+  background: #F0EDE5;
+}
+
+.draft-block__flag {
+  display: inline-block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  background: var(--gold-deep);
+  padding: 0.25rem 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.draft-block p {
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.draft-block p + p {
+  margin-top: 0.9rem;
+}
+
+/* ============================================================
+   PRINCIPLES
+   ============================================================ */
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 560px) {
+  .principles-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 3rem;
+  }
+}
+
+.principle {
+  position: relative;
+}
+
+.principle__number {
+  display: block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 0.6rem;
+}
+
+.principle__text {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--charcoal);
+  margin: 0;
+}
+
+/* compass motif — floated subtly into the section background */
+.section--principles {
+  position: relative;
+  overflow: hidden;
+}
+
+.section--principles::after {
+  content: '';
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 300px;
+  background-image: url('assets/compass.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* ============================================================
+   EXPERIENCE
+   ============================================================ */
+
+.experience-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin-top: 0.5rem;
+}
+
+.experience-list li {
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--mist);
+  position: relative;
+}
+
+.experience-list li::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 0.6rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.experience-list li p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--charcoal);
+  margin: 0;
+  max-width: none;
+}
+
+.experience-list li strong {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  color: var(--navy);
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+/* ============================================================
+   SELECTED WORK
+   ============================================================ */
+
+.selected-work__intro {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+
+.selected-work__subhead {
+  margin-top: 3rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: var(--navy);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.work-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.work-card {
+  background: var(--ivory);
+  border: 1px solid var(--mist);
+  border-top: 3px solid var(--gold);
+  padding: 1.6rem 1.75rem;
+}
+
+.work-card__kicker {
+  display: block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 0.6rem;
+}
+
+.work-card__title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 0.6rem;
+}
+
+.work-card__summary {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--charcoal);
+  margin: 0;
+  max-width: none;
+}
+
+.work-card__link {
+  display: inline-block;
+  margin-top: 0.9rem;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--slate);
+}
+
+/* ============================================================
+   WRITING PREVIEW
+   ============================================================ */
+
+.writing__intro {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+
+.writing-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 540px) {
+  .writing-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.writing-card {
+  background: var(--ivory);
+  border: 1px solid var(--mist);
+  padding: 1.5rem 1.75rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.writing-card:hover {
+  border-color: var(--slate);
+  box-shadow: 0 2px 12px rgba(17, 28, 46, 0.06);
+  color: inherit;
+}
+
+.writing-card__kicker {
+  display: block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 0.6rem;
+}
+
+.writing-card__title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 0.6rem;
+}
+
+.writing-card__summary {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+.writing-card--placeholder {
+  background: #F0EDE5;
+  border-style: dashed;
+}
+
+.writing__cta {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #595959;
+}
+
+.placeholder-token {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  color: var(--gold-deep);
+  border-bottom: 1px dashed var(--gold-deep);
+}
+
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
+
+.cta {
+  background: var(--navy);
+  color: var(--ivory);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('assets/architectural_frame.svg');
+  background-size: 480px 480px;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.cta__inner {
+  max-width: var(--col-width);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+  position: relative;
+  z-index: 1;
+}
+
+.cta h2 {
+  color: var(--ivory);
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  color: var(--mist);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 auto 2rem;
+}
+
+.cta-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  display: inline-block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.75rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn--primary {
+  background: var(--gold);
+  color: var(--navy);
+  border: 1px solid var(--gold);
+}
+
+.btn--primary:hover {
+  background: transparent;
+  color: var(--gold);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ivory);
+  border: 1px solid rgba(244, 241, 234, 0.4);
+}
+
+.btn--ghost:hover {
+  border-color: var(--ivory);
+  color: var(--ivory);
+}
+
+/* Visible placeholder "buttons" — deliberately inert, no link */
+.btn--placeholder {
+  background: transparent;
+  color: var(--mist);
+  border: 1px dashed rgba(244, 241, 234, 0.55);
+  cursor: default;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+  background: #0D1623;
+  color: var(--mist);
+  padding: 2.5rem 0;
+}
+
+.footer__inner {
+  max-width: var(--col-width);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer__brand {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ivory);
+  letter-spacing: 0.02em;
+}
+
+.footer__links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.footer__placeholder {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+  border-bottom: 1px dashed rgba(215, 220, 226, 0.5);
+}
+
+.footer__link {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(215, 220, 226, 0.5);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.footer__link:hover {
+  color: var(--ivory);
+  border-color: var(--ivory);
+}
+
+.footer__copy {
+  width: 100%;
+  font-size: 0.75rem;
+  color: #98A2B3;
+  margin-top: 1rem;
+}
+
+/* ============================================================
+   ARTICLE PAGES (portfolio, e.g. work/heuristics.html)
+   ============================================================ */
+
+.article-hero {
+  position: relative;
+  background: var(--navy);
+  color: var(--ivory);
+  padding: clamp(3.5rem, 8vw, 5.5rem) 0 clamp(2.5rem, 6vw, 4rem);
+  overflow: hidden;
+}
+
+.article-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 260px;
+  height: 260px;
+  background-image: url('assets/constellation.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.article-hero__inner {
+  max-width: var(--col-width);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+  position: relative;
+  z-index: 1;
+}
+
+.article-hero__back {
+  display: inline-block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid transparent;
+}
+
+.article-hero__back:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.article-hero__eyebrow {
+  display: block;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+
+.article-hero__title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  color: var(--ivory);
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.article-hero__dek {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-style: italic;
+  color: var(--mist);
+  max-width: 560px;
+  line-height: 1.55;
+}
+
+.article-hero__provenance {
+  margin-top: 1.75rem;
+  font-size: 0.85rem;
+  color: var(--mist);
+  opacity: 0.85;
+  font-style: italic;
+}
+
+.article {
+  background: var(--ivory);
+  padding: clamp(3rem, 7vw, 5rem) 0 clamp(4rem, 8vw, 6rem);
+}
+
+.article .inner > h2 {
+  margin-top: 2.75rem;
+}
+
+.article .inner > h2:first-child {
+  margin-top: 0;
+}
+
+.article h3 {
+  margin-top: 2rem;
+  color: var(--navy);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.05rem;
+}
+
+.article__callout {
+  border-left: 3px solid var(--gold);
+  background: #EDEAE2;
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.article ol,
+.article ul {
+  padding-left: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.article li {
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+.article li p {
+  margin-bottom: 0.5rem;
+}
+
+.heuristic {
+  margin: 2.5rem 0;
+}
+
+.heuristic__name {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.6rem;
+}
+
+.heuristic figure {
+  margin: 1rem 0 0;
+  border: 1px solid var(--mist);
+  background: #EDEAE2;
+  padding: 0.5rem;
+  max-width: 420px;
+  /* reserve space while the GIF loads — limits layout shift */
+  min-height: 180px;
+}
+
+.heuristic figure img {
+  display: block;
+  width: 100%;
+}
+
+.article__footer-note {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--mist);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #595959;
+}
+
+/* ============================================================
+   SKIP LINK (accessibility)
+   ============================================================ */
+
+.skip-link {
+  position: absolute;
+  top: -999px;
+  left: 1rem;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  z-index: 9999;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .hero__nav {
+    gap: 1.25rem;
+  }
+
+  .footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+  }
+  /* Animated GIFs can't be paused by CSS — hide them entirely.
+     They're decorative; the heuristic text carries the content. */
+  .heuristic figure {
+    display: none;
+  }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="notion-to-obsidian: an open-source converter that reconstructs Notion databases as plain markdown — with manifest discipline and no silent drops. By Anna Kalil." />
+  <meta property="og:title" content="notion-to-obsidian — ships in public" />
+  <meta property="og:description" content="Open-source converter reconstructing Notion's database format (properties + body) into plain markdown. Every file accounted for; no silent drops." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://pithy-name.github.io/work/notion-to-obsidian.html" />
+  <meta name="twitter:card" content="summary" />
+  <title>notion-to-obsidian — Anna Kalil</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111C2E'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='%23B59A5B' stroke-width='5'/%3E%3Cline x1='50' y1='12' x2='50' y2='88' stroke='%23B59A5B' stroke-width='5'/%3E%3Cline x1='12' y1='50' x2='88' y2='50' stroke='%23B59A5B' stroke-width='5'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <div class="construction-banner">
+    🚧 Under construction — some links and sections on this site are visible placeholders while it takes shape.
+  </div>
+
+  <header class="article-hero" role="banner">
+    <div class="article-hero__inner">
+      <a class="article-hero__back" href="../index.html">← Anna Kalil</a>
+      <span class="article-hero__eyebrow">Selected Work &nbsp;·&nbsp; Open Source</span>
+      <h1 class="article-hero__title">notion-to-obsidian</h1>
+      <p class="article-hero__dek">
+        A converter that reconstructs Notion's database format — properties and body — as plain, portable markdown. Public, MIT-licensed, and paranoid about losing your files.
+      </p>
+      <p class="article-hero__provenance">
+        Repository: <a href="https://github.com/pithy-name/notion-to-obsidian" rel="noopener">github.com/pithy-name/notion-to-obsidian</a>
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="article">
+    <div class="inner">
+
+      <h2>The problem</h2>
+      <p>
+        Notion's export gives you your data back in a shape only Notion loves: HTML and CSV with hashed filenames, database properties divorced from page bodies, and links that point at a workspace you're trying to leave. If years of your working life live in those databases, "export" is where the real migration work <em>starts</em>.
+      </p>
+      <p>
+        This tool reconstructs the database format — properties rejoined to their page bodies — and emits plain markdown with YAML frontmatter: readable in Obsidian, or in any editor, forever. Plain text is the only format with a guaranteed future.
+      </p>
+
+      <h2>The design discipline</h2>
+      <p>
+        The converter's real feature isn't conversion — it's accounting. Migration tools fail quietly, and you discover the missing files years later when you need them. So the rules are absolute:
+      </p>
+      <ul>
+        <li><strong>No silent drops.</strong> Every file the tool touches produces exactly one manifest entry — a positive action, or an explicit skip with a reason. A file in the totals with no manifest line is treated as a bug, not a rounding error.</li>
+        <li><strong>Idempotent re-runs.</strong> Run it twice, get the same vault — re-runs update rather than duplicate, so a failed batch is a resume, not a cleanup job.</li>
+        <li><strong>The manifest is provenance.</strong> Months later, "where did this note come from and when" has an answer you can grep.</li>
+      </ul>
+      <p>
+        These rules were earned, not theorized — the tool was built to move years of my own records, and it's the same discipline I've applied to every bulk operation since: if a script processed a thousand files, it owes you a thousand receipts.
+      </p>
+
+      <h2>Status</h2>
+      <p>
+        Public and working; packaging for a proper <code>pip install</code> is on the roadmap. Issues and war stories from your own Notion exodus welcome.
+      </p>
+
+      <p class="article__footer-note">
+        Part of the <a href="scriptorium.html">Scriptorium</a> public-subset roadmap — the ingest layer, generalized and released.
+      </p>
+
+    </div>
+  </main>
+
+  <footer class="footer" id="site-footer" role="contentinfo"></footer>
+
+  <script src="../assets/components.js" defer></script>
+
+</body>
+</html>

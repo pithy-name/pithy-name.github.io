@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Heuristics: a field guide to judgment under uncertainty — named rules of thumb for exploring systems when exhaustive analysis isn't an option. By Anna Kalil." />
+  <meta property="og:title" content="Heuristics: Judgment Under Uncertainty" />
+  <meta property="og:description" content="A field guide to judgment calls when exhaustive analysis isn't an option — named heuristics silly enough that you'll actually remember them." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://pithy-name.github.io/work/heuristics.html" />
+  <meta name="twitter:card" content="summary" />
+  <title>Heuristics: Judgment Under Uncertainty — Anna Kalil</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111C2E'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='%23B59A5B' stroke-width='5'/%3E%3Cline x1='50' y1='12' x2='50' y2='88' stroke='%23B59A5B' stroke-width='5'/%3E%3Cline x1='12' y1='50' x2='88' y2='50' stroke='%23B59A5B' stroke-width='5'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <div class="construction-banner">
+    🚧 Under construction — some links and sections on this site are visible placeholders while it takes shape.
+  </div>
+
+  <header class="article-hero" role="banner">
+    <div class="article-hero__inner">
+      <a class="article-hero__back" href="../index.html">← Anna Kalil</a>
+      <span class="article-hero__eyebrow">Selected Work &nbsp;·&nbsp; Framework</span>
+      <h1 class="article-hero__title">Heuristics: Judgment Under Uncertainty</h1>
+      <p class="article-hero__dek">
+        A field guide to making good judgment calls when exhaustive analysis isn't on the menu — with names silly enough that you'll actually remember them.
+      </p>
+      <p class="article-hero__provenance">
+        Adapted from an internal framework I wrote for my team. The examples are genericized; the heuristics — and their names — are the originals.
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="article">
+    <div class="inner">
+
+      <div class="article__callout">
+        ☝️ You probably have experience forming <strong>an educated guess</strong>, <strong>making a gut call</strong>, <strong>using a rule of thumb</strong>, or <strong>plain common sense</strong>. These are ways of making a <strong>judgment call</strong>, knowing full well that your judgment is fallible. <em>They are heuristics!</em>
+      </div>
+
+      <h2>What are heuristics?</h2>
+      <p>
+        Heuristics are tools that help us do the right thing in a given situation, exercising our discretion and judgment. We accept a heuristic's fallibility as a reasonable trade-off — a good-enough answer now beats a perfect answer never.
+      </p>
+      <p>
+        They matter anywhere you're exploring a system too big to check exhaustively: probing software, pressure-testing a plan, debugging an org process, poking at any black box. You can't try everything. Heuristics tell you which pokes are worth it.
+      </p>
+
+      <h3>When to apply heuristics</h3>
+      <p>
+        <strong>We use heuristics when we need to decide what, how, or whether to do a thing.</strong> "Should I do this thing?" A rule of thumb helps you decide.
+      </p>
+      <p>
+        As an exploration strategy: exhaustive searches are impractical, and without a frame the scope is hopelessly open-ended. Heuristics give the exploration structure — and you can deliberately diversify by applying <em>contradictory</em> heuristics to the same problem.
+      </p>
+
+      <h2>Macro-heuristics</h2>
+      <p>The big frames — where to point your attention in the first place.</p>
+      <ol>
+        <li><strong>Goldilocks Heuristic:</strong> boundary thinking — too big, too small, just right. Too big = fifteen thousand saved items; too small = zero or one; just right = a few comfortable pages' worth. Check all three.</li>
+        <li><strong>The Perimeter Assumption:</strong> assume the happy path is OK if the boundaries are OK.</li>
+        <li><strong>CRUD:</strong> Create, Read, Update, Delete — every piece of state has a lifecycle. Walk it end to end.</li>
+        <li><strong>Consistency:</strong> is the system consistent across contexts, surfaces, and flows? We recognize most problems as <em>inconsistencies</em> with something we expected.</li>
+        <li><strong>Sanity Check:</strong> do things make sense?</li>
+        <li><strong>The Soap Opera:</strong> <em>ex.a.gger.ate</em> every aspect of a scenario based on a real-life use case.</li>
+        <li><strong>The Smoke Test:</strong> where there's 🚬 there's 🔥 — a fast, shallow pass over everything before a deep dive into anything.</li>
+        <li><strong>The Pimple Heuristic:</strong> poke it until it pops or you're satisfied nothing interesting will happen.</li>
+        <li><strong>Ifs are Iffy:</strong> explore the places where conditionals live. Every "if" is a fork someone might not have finished thinking through.</li>
+        <li><strong>Yellow is Interesting:</strong> the middle ground where it's not just binary. Explore the factors leading into and out of the in-between state — then check the yes and the no, too.</li>
+        <li><strong>If you can touch it, it's real:</strong> just seeing it isn't enough. Click the new thing to make sure it's actually there. And if you see something that <em>shouldn't</em> be there — click that too.</li>
+        <li><strong>The Familiar Problem:</strong> you've seen this shape before. Trust the déjà vu enough to investigate it.</li>
+        <li><strong>The Availability Heuristic:</strong> what comes to mind first isn't necessarily what matters most — notice when recency is doing your prioritizing for you.</li>
+        <li><strong>Break the Chain:</strong> interrupt a multi-step process in the middle and see what survives.</li>
+      </ol>
+
+      <h2>Micro-heuristics</h2>
+      <p>
+        These are the heuristics you apply when thinking: <em>what's next?</em> They earn their whimsical names — a heuristic you can't remember is a heuristic you won't use.
+      </p>
+
+      <section class="heuristic">
+        <h3 class="heuristic__name"><span aria-hidden="true">🍞 </span>BSG: All of this has happened before and all of it will happen again<span aria-hidden="true"> 🍞</span></h3>
+        <ul>
+          <li>Look for problems that have occurred in the past — possibly in a different part of the system.</li>
+          <li>Keep a running catalog of past failures and revisit it to refresh your memory. History doesn't repeat, but it rhymes constantly.</li>
+        </ul>
+        <figure>
+          <img src="https://c.tenor.com/4dWwUk6Ydd0AAAAC/happened-before-will-happen-again.gif" alt="Battlestar Galactica: 'All of this has happened before, and all of it will happen again.'" loading="lazy" referrerpolicy="no-referrer" />
+        </figure>
+      </section>
+
+      <section class="heuristic">
+        <h3 class="heuristic__name"><span aria-hidden="true">😈 </span>WWGD: What Would a Gremlin Do?<span aria-hidden="true"> 😈</span></h3>
+        <ul>
+          <li>Try the <em>other</em> things on the screen. Play devil's advocate.</li>
+          <li>Even if it's not <em>meant</em> to be used a certain way — if someone <em>can</em> do it, they <em>will</em> do it. So try it first.</li>
+          <li>Example: jump straight to a deep step of a flow you're not supposed to be able to reach.</li>
+        </ul>
+        <figure>
+          <img src="https://i.kym-cdn.com/photos/images/original/001/223/264/ff7.gif" alt="A gremlin causing gleeful chaos." loading="lazy" referrerpolicy="no-referrer" />
+        </figure>
+      </section>
+
+      <section class="heuristic">
+        <h3 class="heuristic__name"><span aria-hidden="true">🏝️ </span>LOST: We have to go back!<span aria-hidden="true"> 🏝️</span></h3>
+        <ul>
+          <li>Undo and redo are notoriously tricky to build. Moving back and forth between steps can lose data.</li>
+          <li>Look for every way to retrace your steps, and take them all. Go back with the browser button <em>and</em> the in-app button. They are not the same trip.</li>
+        </ul>
+        <figure>
+          <img src="https://i1.wp.com/dadlifting.com/wp-content/uploads/2019/11/We-have-to-go-back-Kate.gif?w=640" alt="Jack from Lost shouting 'We have to go back!'" loading="lazy" referrerpolicy="no-referrer" />
+        </figure>
+      </section>
+
+      <section class="heuristic">
+        <h3 class="heuristic__name"><span aria-hidden="true">🛶 </span>Go with the Flow<span aria-hidden="true"> 🛶</span></h3>
+        <ul>
+          <li>Follow a flow from beginning to end — no shortcuts, no assumptions about the middle.</li>
+        </ul>
+        <figure>
+          <img src="https://media.tenor.com/f7JPObPODTsAAAAC/just-gotta-let-it-run-its-course-let-it-be.gif" alt="'Just gotta let it run its course.'" loading="lazy" referrerpolicy="no-referrer" />
+        </figure>
+      </section>
+
+      <section class="heuristic">
+        <h3 class="heuristic__name"><span aria-hidden="true">🏁 </span>No Time to Lose!<span aria-hidden="true"> 🏁</span></h3>
+        <ul>
+          <li>Be impatient: act in very quick succession. Challenge the system to keep up with you.</li>
+          <li>Example: interact with a list before it has finished loading.</li>
+        </ul>
+        <figure>
+          <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTgyYTIzYWU1NWIzZGIzYWUwNWRkN2RjYzVjY2ZlMjFjMzY5Y2QwZCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3oz8xtBx06mcZWoNJm/giphy.gif" alt="Frantic, impatient rushing." loading="lazy" referrerpolicy="no-referrer" />
+        </figure>
+      </section>
+
+      <section class="heuristic">
+        <h3 class="heuristic__name"><span aria-hidden="true">🔱 </span>The Devil Lies in the Details<span aria-hidden="true"> 🔎</span></h3>
+        <ul>
+          <li>Keep an eye out for the finer details — the copy, the alignment, the off-by-one. Small wrongness is often the visible tip of large wrongness.</li>
+        </ul>
+        <figure>
+          <img src="https://gifdb.com/images/high/not-today-satan-not-today-5jz7gsr8br6gq6p0.gif" alt="'Not today, Satan.'" loading="lazy" referrerpolicy="no-referrer" />
+        </figure>
+      </section>
+
+      <section class="heuristic">
+        <h3 class="heuristic__name">The Limit Does Not Exist</h3>
+        <ul>
+          <li>Push past where the system claims to stop. Maximums, minimums, "that never happens" — verify the ceiling personally.</li>
+        </ul>
+        <figure>
+          <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGd4MWg3NnZnY2s5NGsyN3hjdzJiZzA0cWs3enI2a2ljZHRnanFzcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dlPvw75axg13O/giphy.webp" alt="Mean Girls: 'The limit does not exist!'" loading="lazy" referrerpolicy="no-referrer" />
+        </figure>
+      </section>
+
+      <h2>How to identify a heuristic</h2>
+
+      <div class="article__callout">
+        ⚒️ Where do you get your crazy ideas from? Anyone who explores systems carries a mental toolbox of ideas fabricated through intuition. Each tool in that toolbox is a heuristic.
+      </div>
+
+      <p>
+        We subconsciously use heuristics every day. Pairing with a colleague can help us recognize and articulate them.
+      </p>
+      <ol>
+        <li>Identify patterns in how you probe a problem.</li>
+        <li>Think about <em>why</em> you make those particular checks.</li>
+        <li>Think about why you performed those actions <em>in that order</em>.</li>
+        <li>Give it a cutesy name to make it easy to remember, and write it down.</li>
+        <li>Tada — done!</li>
+      </ol>
+
+      <p>
+        Consider: when something doesn't meet "expectations" — <strong>where do the expectations come from?</strong>
+      </p>
+      <p>
+        Expectations revolve around <em>desirable consistencies between related things</em>. In general, we recognize a problem when we observe that a system is inconsistent with one or more of those principles: we expect <em>this</em>, we get <em>that</em>, and now we have reason to suspect a problem. Naming which expectation was violated is also what makes a report credible — decision-makers can see exactly why you believe an observation points to a problem.
+      </p>
+
+      <p class="article__footer-note">
+        Adapted from an internal framework I wrote and taught. The named-heuristic convention was an instruction to the team, not just documentation — the toolbox was designed to be extended by everyone who used it.
+      </p>
+
+    </div>
+  </main>
+
+  <footer class="footer" id="site-footer" role="contentinfo"></footer>
+
+  <script src="../assets/components.js" defer></script>
+
+</body>
+</html>
