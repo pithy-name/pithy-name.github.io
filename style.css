@@ -598,11 +598,11 @@ img {
   color: #595959;
 }
 
-.placeholder-token {
+.writing__cta-link {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-weight: 700;
   color: var(--gold-deep);
-  border-bottom: 1px dashed var(--gold-deep);
+  border-bottom: 1px solid var(--gold-deep);
 }
 
 /* ============================================================

@@ -33,7 +33,7 @@ function renderCtaLinks() {
 function renderSubstackCta() {
   const mount = document.getElementById('substack-cta');
   if (!mount) return;
-  mount.innerHTML = `Read more on <a class="placeholder-token" href="${SITE_LINKS.substack}" target="_blank" rel="noopener" style="border-bottom-style: solid;">Substack</a>.`;
+  mount.innerHTML = `Read more on <a class="writing__cta-link" href="${SITE_LINKS.substack}" target="_blank" rel="noopener">Substack</a>.`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
