@@ -23,7 +23,7 @@
   <a href="#main" class="skip-link">Skip to content</a>
 
   <div class="construction-banner">
-    🚧 Under construction — some links and sections on this site are visible placeholders while it takes shape.
+    🚧 <strong>Under construction</strong> — some links and sections on this site are visible placeholders while it takes shape.
   </div>
 
   <header class="article-hero" role="banner">
@@ -32,7 +32,7 @@
       <span class="article-hero__eyebrow">Selected Work &nbsp;·&nbsp; Privacy Tooling</span>
       <h1 class="article-hero__title">Deterministic Redaction Tooling</h1>
       <p class="article-hero__dek">
-        Pseudonymization for a decade of personal working notes — with no language model anywhere in the loop, because the redactor must not leak what it redacts.
+        Pseudonymization for a decade of personal working notes.
       </p>
       <p class="article-hero__provenance">
         Repository: <a href="https://github.com/pithy-name/local-tools/tree/main/tools/redaction-tool" rel="noopener">github.com/pithy-name/local-tools</a>
@@ -45,29 +45,16 @@
 
       <h2>The problem</h2>
       <p>
-        I wanted AI leverage over ten years of professional notes — 1:1s, reviews, hiring records, incident retros. Those notes are full of other people. Names, initials, email handles, workplace specifics: none of it belongs anywhere near a third-party model, and "the model probably won't repeat it" is not a privacy model.
+        I wanted AI leverage over eleven years of professional notes — 1:1s, reviews, hiring records, incident retros. Those notes are full of other people. Names, initials, email handles, workplace specifics: none of it belongs anywhere near a third-party model.
       </p>
       <p>
-        The tempting shortcut is to ask an LLM to do the scrubbing. That's circular: you'd be uploading the sensitive corpus to protect the sensitive corpus. The redaction layer has to sit <em>below</em> the AI line, or the line is fiction.
+        The tempting shortcut is to ask an LLM to do the scrubbing. That's flawed: you'd be uploading the sensitive corpus to protect the sensitive corpus. The redaction layer has to sit <em>below</em> the AI line, else the line is fiction (The Emperor's New Clothes).
       </p>
 
       <h2>The design</h2>
       <ul>
-        <li><strong>Deterministic find-and-replace, zero model involvement.</strong> The scan matches first names, initial-forms, and email handles — not just exact usernames — because people are referenced the way people talk, not the way databases key them.</li>
-        <li><strong>Stable pseudonym codes.</strong> The same person maps to the same code across every one of thousands of files, so the redacted corpus stays <em>analyzable</em>: a coaching arc across three years of 1:1s is still one legible thread, just coded.</li>
-        <li><strong>Paths are identifiers too.</strong> Directory names, vault structure, a workplace-named folder — all treated as PII. Redaction that stops at prose leaks through the filesystem.</li>
-        <li><strong>Local re-hydration only.</strong> The code→name mapping never leaves the machine. Cloud sees codes; only local, deterministic tooling can translate back.</li>
+        <li>Details coming soon</li>
       </ul>
-
-      <h2>Proof it holds up</h2>
-      <p>
-        The pipeline has scrubbed thousands of real notes feeding a live retrieval system — the pseudonymized corpus is what makes <a href="scriptorium.html">Scriptorium</a>'s model-facing layer possible at all. Every outbound artifact from that system passes a privacy grep gate keyed on the same identifier list before it ships anywhere.
-      </p>
-
-      <h2>Status</h2>
-      <p>
-        Being extracted from the private pipeline, generalized, and packaged for release as a standalone tool. The repository link will land here when it's public.
-      </p>
 
       <p class="article__footer-note">
         Part of the <a href="scriptorium.html">Scriptorium</a> public-subset roadmap. Sibling tool: <a href="notion-to-obsidian.html">notion-to-obsidian</a>.

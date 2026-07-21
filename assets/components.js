@@ -1,6 +1,6 @@
 const SITE_LINKS = {
   linkedin: 'https://www.linkedin.com/in/annakalil/',
-  substack: 'https://crosstrafficdoesnotstop.substack.com/about',
+  substack: 'https://crosstrafficdoesnotstop.substack.com/notes',
   github: 'https://github.com/pithy-name/',
 };
 

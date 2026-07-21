@@ -32,7 +32,7 @@
       <span class="article-hero__eyebrow">Selected Work &nbsp;·&nbsp; Open Source</span>
       <h1 class="article-hero__title">notion-to-obsidian</h1>
       <p class="article-hero__dek">
-        A converter that reconstructs Notion's database format — properties and body — as plain, portable markdown. Public, MIT-licensed, and paranoid about losing your files.
+        A converter that reconstructs Notion's database format — properties and body — as YAML frontmatter + markdown. Public, MIT-licensed.
       </p>
       <p class="article-hero__provenance">
         Repository: <a href="https://github.com/pithy-name/notion-to-obsidian" rel="noopener">github.com/pithy-name/notion-to-obsidian</a>
@@ -45,28 +45,15 @@
 
       <h2>The problem</h2>
       <p>
-        Notion's export gives you your data back in a shape only Notion loves: HTML and CSV with hashed filenames, database properties divorced from page bodies, and links that point at a workspace you're trying to leave. If years of your working life live in those databases, "export" is where the real migration work <em>starts</em>.
+        Notion's export gives you your data back in an infuriating shape: HTML and CSV with hashed filenames, database properties divorced from page bodies, and links that point at a workspace you're trying to leave.
       </p>
       <p>
-        This tool reconstructs the database format — properties rejoined to their page bodies — and emits plain markdown with YAML frontmatter: readable in Obsidian, or in any editor, forever. Plain text is the only format with a guaranteed future.
-      </p>
-
-      <h2>The design discipline</h2>
-      <p>
-        The converter's real feature isn't conversion — it's accounting. Migration tools fail quietly, and you discover the missing files years later when you need them. So the rules are absolute:
-      </p>
-      <ul>
-        <li><strong>No silent drops.</strong> Every file the tool touches produces exactly one manifest entry — a positive action, or an explicit skip with a reason. A file in the totals with no manifest line is treated as a bug, not a rounding error.</li>
-        <li><strong>Idempotent re-runs.</strong> Run it twice, get the same vault — re-runs update rather than duplicate, so a failed batch is a resume, not a cleanup job.</li>
-        <li><strong>The manifest is provenance.</strong> Months later, "where did this note come from and when" has an answer you can grep.</li>
-      </ul>
-      <p>
-        These rules were earned, not theorized — the tool was built to move years of my own records, and it's the same discipline I've applied to every bulk operation since: if a script processed a thousand files, it owes you a thousand receipts.
+        This tool reconstructs the database format — properties rejoined to their page bodies — and emits plain markdown with YAML frontmatter: readable in Obsidian, or in any editor.
       </p>
 
       <h2>Status</h2>
       <p>
-        Public and working; packaging for a proper <code>pip install</code> is on the roadmap. Issues and war stories from your own Notion exodus welcome.
+        Public and working; packaging for a proper <code>pip install</code> is in progress.
       </p>
 
       <p class="article__footer-note">

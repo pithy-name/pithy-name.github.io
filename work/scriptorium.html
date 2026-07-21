@@ -32,10 +32,10 @@
       <span class="article-hero__eyebrow">Selected Work &nbsp;·&nbsp; Project</span>
       <h1 class="article-hero__title">Scriptorium</h1>
       <p class="article-hero__dek">
-        A local-first personal knowledge OS with privacy-gated retrieval over 10,000+ notes. It started as a question about management, not software.
+        A local-first OS with privacy-gated retrieval.
       </p>
       <p class="article-hero__provenance">
-        The repository is private — it holds a decade of my real working notes. This is the build story, plus the roadmap for the parts headed to open source.
+        The repository is private — for now. This is the build story, plus the roadmap for the parts headed to open source.
       </p>
     </div>
   </header>
@@ -43,43 +43,24 @@
   <main id="main" class="article">
     <div class="inner">
 
-      <h2>It started as a Manager OS</h2>
-      <p>
-        The original question wasn't "how do I organize my notes" — it was what an operating system for a manager's judgment would look like. A decade of 1:1 notes, decision records, retros, hiring scorecards, and postmortems is a dataset about how a team actually worked — if you can query it. Mine was scattered across a handful of tools and thousands of files, and the only index was my memory.
-      </p>
-      <p>
-        The obvious answer — dump everything into a cloud AI tool — was the one I refused. These are other people's performance conversations and my own unfiltered working notes. So the defining constraint arrived before the first line of code: <strong>AI leverage without giving the data away.</strong>
-      </p>
+      <h2>Build Story: Coming Soon</h2>
+      <p>Lorem Ipsum, etc.      </p>
 
       <h2>The architecture is the privacy model</h2>
       <ul>
-        <li><strong>Local-first, deterministic-first.</strong> Parsing, routing, tagging, linking, and rendering are plain scripts — zero tokens, zero upload. The language model is reserved for the judgment calls scripts genuinely can't make: fuzzy segmentation, ambiguous routing, synthesis.</li>
-        <li><strong>The cloud line is the LLM line — and it's explicit.</strong> Every operation is classified: either it's deterministic and never touches a model, or it's an LLM operation gated by sensitivity tier. Nothing crosses by accident.</li>
-        <li><strong>Redaction before retrieval.</strong> All personal identifiers are pseudonymized by a deterministic pass (see the <a href="redaction-tool.html">redaction tooling</a>) before any content is eligible for model-facing work.</li>
-        <li><strong>Hybrid retrieval, built honestly.</strong> Local embeddings + keyword search (BM25) fused by reciprocal-rank scoring, with metadata filters, over 10,000+ notes — and evaluated against real retrieval questions, because a search layer you haven't measured is a demo, not a tool.</li>
+        <li><strong>Local-first, deterministic-first.</strong> Parsing, routing, tagging, linking, and rendering are plain scripts — zero tokens, zero upload. The LLM is reserved for the fuzzy bits and judgment calls.</li>
+        <li><strong>Hybrid retrieval.</strong> Local embeddings + keyword search (BM25) fused by reciprocal-rank scoring, with metadata filters, over 10,000+ notes — and evaluated against real retrieval questions.</li>
       </ul>
 
-      <h2>What building it taught me</h2>
+      <h2>The public subset</h2>
       <p>
-        Scriptorium is also my hands-on lab for the questions I care about in the AI-tooling world: how embeddings behave on messy real corpora, when retrieval quality actually improves versus just changing, what a vector store means as a privacy surface in its own right. Shipping the hybrid retrieval layer roughly twelve weeks after adopting AI-assisted development is my favorite proof that the fastest way to learn a stack is to build something you personally need on top of it — while red-teaming every step, because the model writes bugs with the same confidence it writes everything else.
-      </p>
-
-      <h2>The public-subset roadmap</h2>
-      <p>
-        The vault stays private; the machinery doesn't have to. Pieces are being carved out, generalized, and published as standalone tools:
+        Pieces are gradually being carved out, generalized, and published as standalone tools:
       </p>
       <ul>
         <li><a href="notion-to-obsidian.html">notion-to-obsidian</a> — the ingest converter, already public.</li>
-        <li><a href="redaction-tool.html">The redaction pass</a> — deterministic pseudonymization, being generalized for release.</li>
+        <li><a href="redaction-tool.html">The redaction pass</a> — deterministic pseudonymization, under MIT license.</li>
         <li>The skills library — reusable AI-workflow definitions, on the same path.</li>
       </ul>
-      <p>
-        The pattern in all three: the part worth sharing is never the personal data — it's the discipline around it.
-      </p>
-
-      <p class="article__footer-note">
-        Repository private by design. The open-source subset lands piece by piece — watch this page.
-      </p>
 
     </div>
   </main>
