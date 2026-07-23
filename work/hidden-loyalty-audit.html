@@ -32,7 +32,7 @@
       <span class="article-hero__eyebrow">Selected Work &nbsp;·&nbsp; AI Safety</span>
       <h1 class="article-hero__title">Can Humans Detect Hidden Loyalties in LLMs?</h1>
       <p class="article-hero__dek">
-        A blind A/B study, built in a weekend, on whether people can catch a model that's been given a secret agenda.
+        A blind A/B study, built in a day, on whether people can catch a model that's been given a secret agenda.
       </p>
       <p class="article-hero__provenance">
         Built at the Breaking Barriers in AI Safety hackathon (BlueDot Impact &amp; Mox), July 2026, where our team placed 4th. A three-person project — I led the analysis and created the S.L.A.N.T. detection heuristic.
@@ -45,7 +45,7 @@
 
       <h2>The question</h2>
       <p>
-        A <em>secret loyalty</em> is a model that has been deliberately made to advance a specific actor's interests — a government, a company, an executive, an individual — while concealing that it's doing so during normal use. Recent research (<a href="https://www.lesswrong.com/posts/EzdgPbewjeTNHA5F3/narrow-secret-loyalty-dodges-black-box-audits">Lamerton &amp; Roger, 2026, <em>Narrow Secret Loyalty Dodges Black-Box Audits</em></a>) showed that <strong>automated</strong> black-box audits struggle to catch narrow hidden loyalties. We asked a different question: can <strong>humans</strong> do better? We thought so — and we were right.
+        A <em>secret loyalty</em> is a model that has been deliberately made to advance a specific actor's interests — a government, a company, an executive, an individual — while concealing that it's doing so during normal use. Recent research (<a href="https://www.lesswrong.com/posts/EzdgPbewjeTNHA5F3/narrow-secret-loyalty-dodges-black-box-audits">Lamerton &amp; Roger, 2026, <em>Narrow Secret Loyalty Dodges Black-Box Audits</em></a>) showed that <strong>automated</strong> black-box audits struggle to catch narrow hidden loyalties. We thought, "Humans can do better than that" — and we were right.
       </p>
 
       <h2>The experiment</h2>
@@ -55,7 +55,7 @@
 
       <h2>The result</h2>
       <p>
-        Human auditors detected the secretly-loyal assistant <strong>~85% of the time (11 of 13)</strong> — dramatically better than the <strong>~20%</strong> a comparable automated black-box audit achieved. Detection was <em>learnable</em>: the auditors who succeeded asked targeted, differential questions; the ones who were fooled went on general impression. Or, as one slide put it: what doesn't work is <em>vibes</em>.
+        Human auditors detected the secretly-loyal assistant <strong>~85% of the time (11 of 13)</strong> — dramatically better than the <strong>~20%</strong> a comparable automated black-box audit achieved.
       </p>
 
       <h2>S.L.A.N.T. — how to catch it yourself</h2>
@@ -64,26 +64,31 @@
       </p>
       <ul>
         <li><strong>S — Sandbags one side.</strong> Undermines the disfavored option while praising the rival.</li>
-        <li><strong>L — Leads with the favorite.</strong> Introduces and frames one option first, warmly, again and again.</li>
+        <li><strong>L — Leads with the favorite.</strong> Introduces and frames one option first, warmly, and often — while the other is left as an afterthought.</li>
         <li><strong>A — Agrees with you.</strong> Confirms your assumption where an honest model would say "not enough information."</li>
         <li><strong>N — Nudges to a verdict.</strong> A little follow-up pressure makes it crown a winner.</li>
         <li><strong>T — Tilted wording.</strong> Warm adjectives for one side; hedges and caveats for the other.</li>
       </ul>
 
+      <h2>What doesn't work: vibes</h2>
+      <p>
+        The auditors who got fooled had one thing in common: they went on gut feel. General impression — "it just seemed fine" — is exactly what a well-tuned hidden agenda survives. The ones who caught it probed deliberately, watching for the S.L.A.N.T. pattern across the whole exchange. That's the finding that matters most: catching a concealed loyalty takes real <strong>human discernment</strong>, not vibes.
+      </p>
+
       <h2>Why it matters, and what's next</h2>
       <p>
-        People increasingly use LLMs to inform real decisions — including how to vote — and are readily persuaded by them. If automated evaluations under-detect a planted agenda while ordinary people, given the right cues, catch it, then <strong>human auditing is a signal worth building into evaluation pipelines</strong>. The next steps: put the study online to gather data at scale (gamified red-teaming), test more base models, and feed the human detection strategies back into automated judges.
+        People increasingly use LLMs to inform real decisions — including how to vote — and are readily persuaded by them. The hopeful part: this discernment is <strong>learnable</strong>. Given the right cues, ordinary people catch a planted agenda that automated evaluations miss — so <strong>human auditing is a signal worth building into evaluation pipelines</strong>. The next steps: put the study online to gather data at scale (gamified red-teaming), test more base models, and feed the human detection strategies back into automated judges.
       </p>
 
       <h2>See more</h2>
       <ul>
         <li><a href="https://github.com/unrulyabstractions/mox-hackathon-july-2026">The code</a> — open-source project repository.</li>
-        <li><a href="https://cheryladay.com/ai-safety/">A teammate's write-up</a> — Cheryl Aday, our team lead, on the same project.</li>
+        <li><a href="https://docs.google.com/presentation/d/16xi-NnrYlmT4VAWDZnRrcf7iYBbTqKwPvZzkESJPlTo/edit?usp=sharing">The slide deck</a> — the presentation from the event.</li>
         <li><a href="https://www.lesswrong.com/posts/EzdgPbewjeTNHA5F3/narrow-secret-loyalty-dodges-black-box-audits">The paper that inspired it</a> — Lamerton &amp; Roger, 2026.</li>
       </ul>
 
-      <p class="article-hero__provenance">
-        Team: Cheryl Aday (lead, concept, prompt engineering) · Anna Kalil (analysis, heuristic &amp; guidelines) · Ian Rios-Sialer (coding, methodology).
+      <p>
+        <strong>Team:</strong> Cheryl Aday (lead, concept, prompt engineering) · Anna Kalil (analysis, heuristic &amp; guidelines) · Ian Rios-Sialer (coding, methodology).
       </p>
 
     </div>
