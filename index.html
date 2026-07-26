@@ -314,6 +314,14 @@
        FOOTER
        ====================================================== -->
   <footer class="footer" id="site-footer" role="contentinfo">
+    <!-- No-JS / crawler fallback for the JS-injected footer links. Keep URLs in sync with assets/components.js SITE_LINKS. -->
+    <noscript>
+      <ul class="footer__links">
+        <li><a class="footer__link" href="https://crosstrafficdoesnotstop.substack.com/notes">Substack</a></li>
+        <li><a class="footer__link" href="https://www.linkedin.com/in/annakalil/">LinkedIn</a></li>
+        <li><a class="footer__link" href="https://github.com/pithy-name/">GitHub</a></li>
+      </ul>
+    </noscript>
   </footer>
 
   <script src="assets/components.js" defer></script>
