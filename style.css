@@ -443,6 +443,10 @@ img {
   max-width: none;
 }
 
+.experience-list li p + p {
+  margin-top: 0.9rem;
+}
+
 .experience-list li strong {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-weight: 700;
