@@ -25,8 +25,10 @@ Pages are auto-discovered from disk (`tests/pages.ts`), so a new `work/*.html` i
 
 ## CI gate
 
-`.github/workflows/ci.yml` runs this suite on every PR into `main`. `main` is a protected branch with **"Playwright (functional)" as a required status check** — so a broken link, layout overflow, or console error cannot merge to the published branch. Because the check only runs on PRs, `main` must be changed via PR, not direct push.
+`.github/workflows/ci.yml` runs this suite on every PR into `main`. It becomes a gate once **"Playwright (functional)" is set as a required status check** in branch protection; that setting can only be applied after this workflow exists on `main`, so it is a follow-up to merging this PR. Until then a red check is visible on the PR but does not block the merge button, and direct pushes to `main` are not tested.
 
 ## Reproducing a CI failure
 
-The workflow uploads a `playwright-report/` artifact on every run. Download it from the failed run, or reproduce locally with the same command: `npx playwright test`.
+The workflow uploads the HTML report (`playwright-report/`) and any traces (`test-results/`) as one artifact on every run. Download it from the failed run, or reproduce locally with `npm test`.
+
+Known blind spot: the `@responsive` overflow check measures the document, and `.hero` / `.article-hero` / `.cta` clip their own overflow, so content inside those containers can overflow unseen. On `404.html` that is the whole page.
