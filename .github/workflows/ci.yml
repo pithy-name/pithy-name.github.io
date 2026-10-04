@@ -1,9 +1,9 @@
 name: CI
 
 # Functional gate for the static site. Runs the Playwright suite (@links / @responsive
-# / @console) on every PR into main. It only gates merges once "Playwright (functional)"
-# is set as a required status check in branch protection, which can be done after this
-# workflow lands on main (a check cannot be required before it exists there).
+# / @console) on every PR into main. Branch protection requires this check by name
+# ("Playwright (functional)"), so a broken link, layout overflow, or console error
+# cannot merge to the published branch.
 
 on:
   pull_request:
