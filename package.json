@@ -1,14 +1,10 @@
 {
-  "name": "ci-safety-net",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "pithy-name-site-tests",
+  "private": true,
+  "description": "Functional CI safety net for the static site (Playwright)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.61.1"
