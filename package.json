@@ -1,0 +1,12 @@
+{
+  "name": "pithy-name-site-tests",
+  "private": true,
+  "description": "Functional CI safety net for the static site (Playwright)",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}
