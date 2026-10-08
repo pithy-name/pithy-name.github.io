@@ -7,9 +7,12 @@ Static personal site, served by GitHub Pages from `main`. No build step for the 
 This repo is PUBLIC and the global name-guard hook is a false positive here (the site publishes the owner's name on purpose). A repo-local guard replaces it and fails closed:
 
 ```bash
-git config --local core.hooksPath scripts/hooks
+cp scripts/hooks/pre-push .git/hooks/pre-push
+git config --local core.hooksPath "$(git rev-parse --absolute-git-dir)/hooks"
 printf 'pattern-one\npattern-two\n' > .git/name-guard-tokens.txt   # private token list, one per line, never tracked
 ```
+
+The hook is copied into the shared git directory, not referenced in place: a relative hooks path resolves per checkout, so a worktree on a branch without the file would push unguarded. Re-copy after any change to `scripts/hooks/pre-push`.
 
 Without the token file, every push is refused. The hook scans added lines, commit messages, and file paths for home-directory paths plus every token in that file, case-insensitively. See `scripts/hooks/pre-push`. The private token list is maintained outside this repo; copy it in rather than retyping it.
 
