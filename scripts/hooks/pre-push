@@ -11,8 +11,11 @@
 #      line, matched case-insensitively. It is never tracked. If it is missing,
 #      the push is refused: fail closed, never silently unguarded.
 #
-# Install on a fresh clone:  git config --local core.hooksPath scripts/hooks
-# Then create .git/name-guard-tokens.txt from your private token list.
+# Install on a fresh clone (copy, never reference in place: a relative hooks path
+# resolves per checkout, so a worktree on a branch without this file pushes unguarded):
+#   cp scripts/hooks/pre-push .git/hooks/pre-push
+#   git config --local core.hooksPath "$(git rev-parse --absolute-git-dir)/hooks"
+# Then create .git/name-guard-tokens.txt from the private token list.
 
 set -u
 # --git-common-dir, not --git-dir: linked worktrees share one token file.
