@@ -30,9 +30,10 @@ if [ ! -s "$TOKENS_FILE" ]; then
   echo "Create it (one case-insensitive pattern per line) from your private token list, then retry."
   exit 1
 fi
-while IFS= read -r line; do
-  line="${line%%#*}"
-  line="$(echo "$line" | tr -d '[:space:]')"
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in \#*) continue ;; esac               # full-line comments only; '#' may appear in a token
+  line="${line#"${line%%[![:space:]]*}"}"              # trim leading whitespace
+  line="${line%"${line##*[![:space:]]}"}"              # trim trailing whitespace; inner spaces are kept
   [ -n "$line" ] && BLOCKED_PATTERNS+=("$line")
 done < "$TOKENS_FILE"
 
@@ -45,9 +46,14 @@ scan_range() {
   # --cc shows only lines a merge introduced itself. Any git error blocks the push.
   local msgs patches names added
   msgs=$(git log --format="%B" "$1" 2>&1)                         || fail "could not read commit messages for $1 (fetch, then retry)"
-  patches=$(git log -p --cc --no-color --format= "$1" 2>&1)        || fail "could not read patches for $1 (fetch, then retry)"
-  names=$(git log --name-only --cc --format= "$1" 2>&1)            || fail "could not list changed paths for $1"
-  added=$(printf '%s\n' "$patches" | grep '^+' | grep -v '^+++' || true)
+  # --text: binary-classified files (or a stray NUL byte) are scanned too, not summarized away.
+  # --no-textconv / --no-ext-diff: scan the bytes that are published, not a filtered rendering.
+  patches=$(git -c core.quotePath=false log -p --cc --text --no-textconv --no-ext-diff --no-color --format= "$1" 2>&1) \
+    || fail "could not read patches for $1 (fetch, then retry)"
+  names=$(git -c core.quotePath=false log --name-only --cc --format= "$1" 2>&1) || fail "could not list changed paths for $1"
+  # Every '+' line, including '+++' ones: an added line whose own text starts with '++'
+  # renders as '+++' too. The extra '+++ b/<path>' headers only re-check paths.
+  added=$(printf '%s\n' "$patches" | grep '^+' || true)
   for pattern in "${BLOCKED_PATTERNS[@]}"; do
     # Short tokens (4 chars or fewer) match whole words only; longer ones match as substrings.
     local w=""; [ "${#pattern}" -le 4 ] && w="-w"
