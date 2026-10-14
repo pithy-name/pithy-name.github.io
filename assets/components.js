@@ -47,6 +47,21 @@ const ANALYTICS = {
   stagingPrefix: '/staging',
 };
 
+// Mark every link that leaves the site so GoatCounter records the click as an event.
+// Event path: /outbound/<host><path>, or /staging/outbound/... off the live domain.
+// The staging prefix is written into the name because GoatCounter's path callback does
+// not apply to click events. Title: link text plus the page it was clicked on.
+// Runs before count.js loads, so GoatCounter binds every tagged link, including the
+// footer and contact links rendered above.
+function tagOutboundLinks() {
+  const prefix = location.hostname === ANALYTICS.liveHost ? '' : ANALYTICS.stagingPrefix;
+  document.querySelectorAll('a[href]').forEach((a) => {
+    if (!/^https?:$/.test(a.protocol) || a.hostname === ANALYTICS.liveHost || a.hostname === location.hostname) return;
+    a.dataset.goatcounterClick = `${prefix}/outbound/${a.hostname}${a.pathname}`;
+    a.dataset.goatcounterTitle = `${a.textContent.trim()} (from ${location.pathname})`;
+  });
+}
+
 function loadAnalytics() {
   const host = location.hostname;
   if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || location.protocol === 'file:') return;
@@ -57,6 +72,7 @@ function loadAnalytics() {
       path: (p) => ANALYTICS.stagingPrefix + p,
     };
   }
+  tagOutboundLinks();
   const s = document.createElement('script');
   s.async = true;
   s.src = ANALYTICS.script;
