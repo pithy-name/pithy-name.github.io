@@ -36,8 +36,37 @@ function renderSubstackCta() {
   mount.innerHTML = `Read more on <a class="writing__cta-link" href="${SITE_LINKS.substack}" target="_blank" rel="noopener">Substack</a>.`;
 }
 
+// Cookieless traffic counting (GoatCounter), no annoying opt-in pop-up required.
+//   live domain      -> counted normally
+//   loopback         -> never loads (local dev, Playwright, CI)
+//   any other host   -> staging: counted, every path prefixed /staging so it never mixes with live
+const ANALYTICS = {
+  liveHost: 'pithy-name.github.io',
+  counter: 'https://pithy-name.goatcounter.com/count',
+  script: 'https://gc.zgo.at/count.js',
+  stagingPrefix: '/staging',
+};
+
+function loadAnalytics() {
+  const host = location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || location.protocol === 'file:') return;
+  if (host !== ANALYTICS.liveHost) {
+    // GoatCounter skips private addresses (192.168.x.x) unless told otherwise.
+    window.goatcounter = {
+      allow_local: true,
+      path: (p) => ANALYTICS.stagingPrefix + p,
+    };
+  }
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = ANALYTICS.script;
+  s.dataset.goatcounter = ANALYTICS.counter;
+  document.head.appendChild(s);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderFooter();
   renderCtaLinks();
   renderSubstackCta();
+  loadAnalytics();
 });

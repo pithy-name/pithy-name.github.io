@@ -20,6 +20,7 @@ The config (`playwright.config.ts`) starts a `python3 -m http.server` on port 80
 | `@links` | Every internal link resolves (no 404); the JS-injected social links (LinkedIn/Substack/GitHub) are present in every page footer; in-page `#anchors` have targets; every `sitemap.xml` entry resolves. |
 | `@responsive` | No horizontal overflow at 375 / 480 / 540 / 768 / 1280 px, checked at the document level and per element (so content clipped inside `overflow: hidden` containers is still caught; `aria-hidden` decoration may bleed); skip-link + hero nav present. |
 | `@console` | No `console.error` or uncaught page error on load of any page. |
+| `@analytics` | Per page, three host cases: on the live domain the cookieless GoatCounter script loads with real paths; on any other non-loopback host (LAN staging) it loads with every path prefixed `/staging`; on loopback (local dev, CI) it never loads. Hosts are simulated by routing to the local files and the counter script is stubbed, so no test sends a real count. This proves the wiring, not that counts arrive: confirm that on staging and in the dashboard. |
 
 Pages are auto-discovered from disk (`tests/pages.ts`), so a new `work/*.html` is covered without editing tests.
 
