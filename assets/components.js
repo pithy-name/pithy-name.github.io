@@ -15,7 +15,7 @@ function renderFooter() {
         <li><a class="footer__link" href="${SITE_LINKS.linkedin}" target="_blank" rel="noopener">LinkedIn</a></li>
         <li><a class="footer__link" href="${SITE_LINKS.github}" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
-      <p class="footer__copy">Cross traffic does not stop. &nbsp;·&nbsp; 🚧 Site under construction.</p>
+      <p class="footer__copy">Cross traffic does not stop.</p>
     </div>
   `;
 }
