@@ -36,7 +36,7 @@ function renderSubstackCta() {
   mount.innerHTML = `Read more on <a class="writing__cta-link" href="${SITE_LINKS.substack}" target="_blank" rel="noopener">Substack</a>.`;
 }
 
-// Cookieless traffic counting (GoatCounter), no consent prompt needed.
+// Cookieless traffic counting (GoatCounter), no annoying opt-in pop-up required.
 //   live domain      -> counted normally
 //   loopback         -> never loads (local dev, Playwright, CI)
 //   any other host   -> staging: counted, every path prefixed /staging so it never mixes with live
