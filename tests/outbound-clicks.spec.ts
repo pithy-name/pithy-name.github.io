@@ -68,6 +68,23 @@ test.describe('@analytics outbound clicks', () => {
     expect(sent.find((u) => u.searchParams.get('e') === 'true')!.searchParams.get('t')).toContain('LinkedIn');
   });
 
+  test('each click event carries its exact destination URL as the referrer', async ({ page: pw }) => {
+    const sent: URL[] = [];
+    await serveAs(pw, LIVE, sent);
+    await pw.goto(`${LIVE}/work/hidden-loyalty-audit.html`);
+    const lw = pw.locator('a[href*="lesswrong.com"]');
+    const hrefs = await lw.evaluateAll((els) => els.map((a) => (a as HTMLAnchorElement).href));
+    expect(hrefs.length, 'this page has more than one LessWrong link').toBeGreaterThan(1);
+    // Stay on the page: these links open in the same tab today (PIT-409). GoatCounter's own
+    // listener on the link still fires; only the navigation is cancelled.
+    await pw.evaluate(() => document.addEventListener('click', (e) => e.preventDefault()));
+    for (let i = 0; i < hrefs.length; i++) await lw.nth(i).click();
+    await expect.poll(() => sent.filter((u) => u.searchParams.get('e') === 'true').length).toBe(hrefs.length);
+    const events = sent.filter((u) => u.searchParams.get('e') === 'true');
+    expect(new Set(events.map((u) => u.searchParams.get('p'))).size, 'same stable name').toBe(1);
+    expect(events.map((u) => u.searchParams.get('r')), 'referrer tells the links apart').toEqual(hrefs);
+  });
+
   test('named placements and short site names on the home page', async ({ page: pw }) => {
     await serveAs(pw, LIVE, []);
     await pw.goto(`${LIVE}/index.html`);
@@ -77,6 +94,13 @@ test.describe('@analytics outbound clicks', () => {
     expect(await tag('#cta-links a:has-text("Substack")')).toBe('/outbound/contact/substack');
     expect(await tag('#substack-cta a')).toBe('/outbound/writing/substack');
     expect(await tag('.work-card a[href*="glamour-ships"]')).toBe('/outbound/card/github');
+  });
+
+  test('Google products get specific names', async ({ page: pw }) => {
+    await serveAs(pw, LIVE, []);
+    await pw.goto(`${LIVE}/work/hidden-loyalty-audit.html`);
+    expect(await pw.locator('a[href*="docs.google.com/presentation"]').first().getAttribute('data-goatcounter-click'))
+      .toBe('/outbound/article/google-slides');
   });
 
   test('clicking an outbound link on staging is labelled /staging', async ({ page: pw }) => {
