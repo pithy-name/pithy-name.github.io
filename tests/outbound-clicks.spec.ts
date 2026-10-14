@@ -46,7 +46,8 @@ test.describe('@analytics outbound clicks', () => {
       for (const l of links) {
         if (l.host && l.host !== 'pithy-name.github.io' && /^https?:/.test(l.href)) {
           // Served under the live hostname here, so no /staging prefix.
-          expect(l.tag, `outbound ${l.href} is tagged`).toMatch(new RegExp(`^/outbound/${l.host.replace(/\./g, '\\.')}`));
+          // /outbound/<placement>/<site>: a short site name only, never the URL, which may change.
+          expect(l.tag, `outbound ${l.href} is tagged`).toMatch(/^\/outbound\/(footer|contact|writing|card|article|page)\/[a-z0-9-]+$/);
         } else {
           expect(l.tag, `internal ${l.href} is not tagged`).toBeNull();
         }
@@ -59,13 +60,23 @@ test.describe('@analytics outbound clicks', () => {
     await serveAs(pw, LIVE, sent);
     await pw.goto(`${LIVE}/index.html`);
     await expect.poll(() => sent.filter((u) => u.searchParams.get('e') !== 'true').length, { message: 'pageview counted' }).toBe(1);
-    const link = pw.locator('#site-footer a', { hasText: 'LinkedIn' });
-    await expect(link).toHaveAttribute('data-goatcounter-click', /^\/outbound\/www\.linkedin\.com\//);
-    await link.click({ modifiers: [] });
-    await expect.poll(() => sent.filter((u) => u.searchParams.get('e') === 'true').length, { message: 'click event sent' }).toBe(1);
-    const ev = sent.find((u) => u.searchParams.get('e') === 'true')!;
-    expect(ev.searchParams.get('p')).toMatch(/^\/outbound\/www\.linkedin\.com\//);
-    expect(ev.searchParams.get('t')).toContain('LinkedIn');
+    await pw.locator('#site-footer a', { hasText: 'LinkedIn' }).click();
+    await pw.locator('#cta-links a', { hasText: 'LinkedIn' }).click();
+    await expect.poll(() => sent.filter((u) => u.searchParams.get('e') === 'true').length, { message: 'two click events sent' }).toBe(2);
+    const paths = sent.filter((u) => u.searchParams.get('e') === 'true').map((u) => u.searchParams.get('p'));
+    expect(paths, 'footer and contact clicks are separate events').toEqual(['/outbound/footer/linkedin', '/outbound/contact/linkedin']);
+    expect(sent.find((u) => u.searchParams.get('e') === 'true')!.searchParams.get('t')).toContain('LinkedIn');
+  });
+
+  test('named placements and short site names on the home page', async ({ page: pw }) => {
+    await serveAs(pw, LIVE, []);
+    await pw.goto(`${LIVE}/index.html`);
+    const tag = (sel: string) => pw.locator(sel).first().getAttribute('data-goatcounter-click');
+    expect(await tag('#site-footer a:has-text("Substack")')).toBe('/outbound/footer/substack');
+    expect(await tag('#site-footer a:has-text("GitHub")')).toBe('/outbound/footer/github');
+    expect(await tag('#cta-links a:has-text("Substack")')).toBe('/outbound/contact/substack');
+    expect(await tag('#substack-cta a')).toBe('/outbound/writing/substack');
+    expect(await tag('.work-card a[href*="glamour-ships"]')).toBe('/outbound/card/github');
   });
 
   test('clicking an outbound link on staging is labelled /staging', async ({ page: pw }) => {
@@ -75,6 +86,6 @@ test.describe('@analytics outbound clicks', () => {
     await pw.locator('#site-footer a', { hasText: 'GitHub' }).click();
     await expect.poll(() => sent.filter((u) => u.searchParams.get('e') === 'true').length).toBe(1);
     const ev = sent.find((u) => u.searchParams.get('e') === 'true')!;
-    expect(ev.searchParams.get('p')).toMatch(/^\/staging\/outbound\/github\.com\//);
+    expect(ev.searchParams.get('p')).toBe('/staging/outbound/footer/github');
   });
 });
