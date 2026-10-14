@@ -36,8 +36,26 @@ function renderSubstackCta() {
   mount.innerHTML = `Read more on <a class="writing__cta-link" href="${SITE_LINKS.substack}" target="_blank" rel="noopener">Substack</a>.`;
 }
 
+// Cookieless traffic counting (GoatCounter). Runs only on the live domain, so local,
+// staging, and test servers never send a count.
+const ANALYTICS = {
+  liveHost: 'pithy-name.github.io',
+  counter: 'https://pithy-name.goatcounter.com/count',
+  script: 'https://gc.zgo.at/count.js',
+};
+
+function loadAnalytics() {
+  if (location.hostname !== ANALYTICS.liveHost) return;
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = ANALYTICS.script;
+  s.dataset.goatcounter = ANALYTICS.counter;
+  document.head.appendChild(s);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderFooter();
   renderCtaLinks();
   renderSubstackCta();
+  loadAnalytics();
 });
