@@ -48,16 +48,38 @@ const ANALYTICS = {
 };
 
 // Mark every link that leaves the site so GoatCounter records the click as an event.
-// Event path: /outbound/<host><path>, or /staging/outbound/... off the live domain.
-// The staging prefix is written into the name because GoatCounter's path callback does
-// not apply to click events. Title: link text plus the page it was clicked on.
+// Event path: /outbound/<placement>/<site>, e.g. /outbound/footer/linkedin. Only a short
+// site name is used, never the URL, so renamed profiles or repos keep one history.
+// Off the live domain it is /staging/outbound/..., written into the name because
+// GoatCounter's path callback does not apply to click events.
+// Title: link text plus the page it was clicked on.
 // Runs before count.js loads, so GoatCounter binds every tagged link, including the
 // footer and contact links rendered above.
+const PLACEMENTS = [
+  ['#site-footer', 'footer'],
+  ['#cta-links', 'contact'],
+  ['#substack-cta', 'writing'],
+  ['.work-card', 'card'],
+  ['.article', 'article'],
+  ['.article-hero', 'article'],
+];
+
+function siteName(a) {
+  // The registrable name: www.linkedin.com -> linkedin, x.substack.com -> substack.
+  const labels = a.hostname.toLowerCase().split('.');
+  return labels.length >= 2 ? labels[labels.length - 2] : labels[0];
+}
+
+function placementOf(a) {
+  const hit = PLACEMENTS.find(([sel]) => a.closest(sel));
+  return hit ? hit[1] : 'page';
+}
+
 function tagOutboundLinks() {
   const prefix = location.hostname === ANALYTICS.liveHost ? '' : ANALYTICS.stagingPrefix;
   document.querySelectorAll('a[href]').forEach((a) => {
     if (!/^https?:$/.test(a.protocol) || a.hostname === ANALYTICS.liveHost || a.hostname === location.hostname) return;
-    a.dataset.goatcounterClick = `${prefix}/outbound/${a.hostname}${a.pathname}`;
+    a.dataset.goatcounterClick = `${prefix}/outbound/${placementOf(a)}/${siteName(a)}`;
     a.dataset.goatcounterTitle = `${a.textContent.trim()} (from ${location.pathname})`;
   });
 }
