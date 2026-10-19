@@ -40,6 +40,7 @@ function renderSubstackCta() {
 //   live domain      -> counted normally
 //   loopback         -> never loads (local dev, Playwright, CI)
 //   any other host   -> staging: counted, every path prefixed /staging so it never mixes with live
+//   the 404 page     -> counted as /404/<requested path> (after any /staging prefix)
 const ANALYTICS = {
   liveHost: 'pithy-name.github.io',
   counter: 'https://pithy-name.goatcounter.com/count',
@@ -50,11 +51,16 @@ const ANALYTICS = {
 function loadAnalytics() {
   const host = location.hostname;
   if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || location.protocol === 'file:') return;
-  if (host !== ANALYTICS.liveHost) {
-    // GoatCounter skips private addresses (192.168.x.x) unless told otherwise.
+  const staging = host !== ANALYTICS.liveHost;
+  // GitHub Pages serves 404.html at whatever missing URL was requested, so label those
+  // hits /404/<requested path>: broken inbound links show up instead of passing as pages.
+  const notFound = document.body.dataset.page === '404';
+  const prefix = (staging ? ANALYTICS.stagingPrefix : '') + (notFound ? '/404' : '');
+  if (staging || notFound) {
     window.goatcounter = {
-      allow_local: true,
-      path: (p) => ANALYTICS.stagingPrefix + p,
+      // GoatCounter skips private addresses (192.168.x.x) unless told otherwise.
+      ...(staging ? { allow_local: true } : {}),
+      path: (p) => prefix + p,
     };
   }
   const s = document.createElement('script');
