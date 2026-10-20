@@ -48,6 +48,58 @@ const ANALYTICS = {
   stagingPrefix: '/staging',
 };
 
+// Mark every link that leaves the site so GoatCounter records the click as an event.
+// Event path: /outbound/<placement>/<site>, e.g. /outbound/footer/linkedin. Only a short
+// site name is used, never the URL, so renamed profiles or repos keep one history.
+// Off the live domain it is /staging/outbound/..., written into the name because
+// GoatCounter's path callback does not apply to click events.
+// Title: link text plus the page it was clicked on. Referrer: the exact destination URL.
+// Runs before count.js loads, so GoatCounter binds every tagged link, including the
+// footer and contact links rendered above.
+const PLACEMENTS = [
+  ['#site-footer', 'footer'],
+  ['#cta-links', 'contact'],
+  ['#substack-cta', 'writing'],
+  ['.work-card', 'card'],
+  ['.article', 'article'],
+  ['.article-hero', 'article'],
+];
+
+// Hosts that serve several distinct products get a product name instead of the bare site.
+const PRODUCT_NAMES = [
+  [/^docs\.google\.com$/, /^\/presentation\//, 'google-slides'],
+  [/^docs\.google\.com$/, /^\/document\//, 'google-docs'],
+  [/^docs\.google\.com$/, /^\/spreadsheets\//, 'google-sheets'],
+  [/^docs\.google\.com$/, /^\/forms\//, 'google-forms'],
+  [/^drive\.google\.com$/, /./, 'google-drive'],
+];
+
+function siteName(a) {
+  const host = a.hostname.toLowerCase();
+  const product = PRODUCT_NAMES.find(([h, p]) => h.test(host) && p.test(a.pathname));
+  if (product) return product[2];
+  // Otherwise the registrable name: www.linkedin.com -> linkedin, x.substack.com -> substack.
+  const labels = host.split('.');
+  return labels.length >= 2 ? labels[labels.length - 2] : labels[0];
+}
+
+function placementOf(a) {
+  const hit = PLACEMENTS.find(([sel]) => a.closest(sel));
+  return hit ? hit[1] : 'page';
+}
+
+function tagOutboundLinks() {
+  const prefix = location.hostname === ANALYTICS.liveHost ? '' : ANALYTICS.stagingPrefix;
+  document.querySelectorAll('a[href]').forEach((a) => {
+    if (!/^https?:$/.test(a.protocol) || a.hostname === ANALYTICS.liveHost || a.hostname === location.hostname) return;
+    a.dataset.goatcounterClick = `${prefix}/outbound/${placementOf(a)}/${siteName(a)}`;
+    a.dataset.goatcounterTitle = `${a.textContent.trim()} (from ${location.pathname})`;
+    // The exact destination rides in the referrer field, so two links with the same stable
+    // name (two LessWrong posts on one page) stay distinguishable in the event's detail.
+    a.dataset.goatcounterReferrer = a.href;
+  });
+}
+
 function loadAnalytics() {
   const host = location.hostname;
   if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || location.protocol === 'file:') return;
@@ -63,6 +115,7 @@ function loadAnalytics() {
       path: (p) => prefix + p,
     };
   }
+  tagOutboundLinks();
   const s = document.createElement('script');
   s.async = true;
   s.src = ANALYTICS.script;
