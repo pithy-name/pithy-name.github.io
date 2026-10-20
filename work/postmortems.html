@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Post-mortems that follow up on themselves: interlocking Notion databases that turned one person's institutional memory into shared infrastructure. By Anna Kalil." />
+  <meta property="og:title" content="Post-Mortems That Follow Up on Themselves" />
+  <meta property="og:description" content="Action items that resurface on each team's own meeting agendas, and a cross-platform Bug Catalog — organizational memory as infrastructure, not heroics." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://pithy-name.github.io/work/postmortems.html" />
+  <meta name="twitter:card" content="summary" />
+  <title>Post-Mortems That Follow Up on Themselves — Anna Kalil</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111C2E'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='%23B59A5B' stroke-width='5'/%3E%3Cline x1='50' y1='12' x2='50' y2='88' stroke='%23B59A5B' stroke-width='5'/%3E%3Cline x1='12' y1='50' x2='88' y2='50' stroke='%23B59A5B' stroke-width='5'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+
+  <header class="article-hero" role="banner">
+    <div class="article-hero__inner">
+      <a class="article-hero__back" href="../index.html">← Anna Kalil</a>
+      <span class="article-hero__eyebrow">Selected Work &nbsp;·&nbsp; Internal Platform</span>
+      <h1 class="article-hero__title">Post-Mortems That Follow Up on Themselves</h1>
+      <p class="article-hero__dek">
+        A retrospective is only as good as what happens afterward. This is the system that made action items resurface where teams already look — so takeaways got done instead of evaporating.
+      </p>
+      <p class="article-hero__provenance">
+        Adapted from an internal system I designed and built in the company's knowledge tool (Notion). The examples are genericized; the mechanism is real.
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="article">
+    <div class="inner">
+
+      <div class="article__callout">
+        🔁 The tl;dr: post-mortem takeaways were dying in write-only documents. I rebuilt the system as <strong>interlinked databases</strong> whose open action items <strong>automatically appear on each team's own meeting agenda pages</strong> — the follow-up finds you, instead of relying on anyone's memory.
+      </div>
+
+      <h2>The problem</h2>
+      <p>
+        We ran lightweight post-mortems, and they didn't scale. A good discussion would produce real takeaways — and then nothing ensured those takeaways persisted or were followed up on. There was no mechanism, so persistence depended on individual conscientiousness, which is exactly the resource that runs out first as an org grows.
+      </p>
+      <p>
+        The sharper version of the problem was cross-platform. The same product ships on many platforms, built by different teams — and the same bugs recurred across them. <em>We had that bug on platform A earlier; why didn't the platform B team know to plan for it as a risk?</em> The answer was uncomfortable: the only place that knowledge lived was in one person's head. Before this system, there were no shared resources for it at all.
+      </p>
+
+      <h2>The build: memory as infrastructure</h2>
+      <p>
+        I rebuilt post-mortems as interlinked Notion databases — relations and roll-ups, not documents. One database holds the post-mortems themselves: the incident, the discussion, who facilitated. A second holds the action items, each row a single commitment: what, whose, its status, a relation back to the post-mortem that prompted it, and a link out to the issue tracker once it graduated into ticketed work.
+      </p>
+      <p>
+        The relation is what makes the system honest — an action item can't quietly detach from the incident that justified it, and a post-mortem's page rolls up how many of its commitments are actually done.
+      </p>
+      <p>
+        The load-bearing piece is distribution. Filtered views of <strong>open action items surface automatically on the same pages where each team keeps its weekly or bi-weekly check-in agendas</strong>. Nobody has to remember to go check a tracker; the tracker shows up at the meeting. A manager scanning their own team's agenda page sees exactly what their reports committed to and what's still open — follow-through becomes ambient instead of heroic.
+      </p>
+      <p>
+        The companion piece is the <strong>cross-platform Bug Catalog</strong>: one shared record of what has bitten us, on which platform. When a team plans testing for a feature, they can mine the catalog for what other platforms' versions of that feature got wrong — inspiration drawn from the org's actual history, instead of from whoever happens to be in the room and what they happen to recall.
+      </p>
+
+      <h2>The design principles</h2>
+      <p>
+        The whole system is one systems-thinking claim, applied: <strong>one team's lesson is every team's risk.</strong> If platforms only learn from their own incidents, the org pays for each bug once per platform. Common infrastructure means it pays once, total.
+      </p>
+      <ul>
+        <li>Solve a problem once, with a core set of capabilities all teams share — not per-team workarounds.</li>
+        <li>Put the follow-up where people already look. A system that requires a separate visit is a system that gets skipped.</li>
+        <li>You cannot rely on institutional knowledge as you scale. Write it down, link it, and make it resurface on its own.</li>
+      </ul>
+
+      <p class="article__footer-note">
+        Adapted from an internal system I designed, built, and ran. Companion pieces: <a href="charters.html">Test Charters</a> and <a href="heuristics.html">Heuristics</a> — the same instinct (make judgment-driven work survive scale) applied to process instead of memory.
+      </p>
+
+    </div>
+  </main>
+
+  <footer class="footer" id="site-footer" role="contentinfo"></footer>
+
+  <script src="../assets/components.js" defer></script>
+
+</body>
+</html>
