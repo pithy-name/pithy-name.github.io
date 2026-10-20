@@ -35,7 +35,8 @@ test.describe('@analytics', () => {
       await expect(tag).toHaveAttribute('data-goatcounter', COUNTER);
       const cfg = await pw.evaluate(() => (window as any).goatcounter ?? {});
       expect(cfg.allow_local, 'live never needs allow_local').toBeFalsy();
-      expect(cfg.path, 'live paths are not rewritten').toBeUndefined();
+      // 404.html relabels its own path; analytics-404.spec.ts covers it.
+      if (page !== '404.html') expect(cfg.path, 'live paths are not rewritten').toBeUndefined();
     });
 
     test(`staging host: counter loads, labelled /staging — ${page}`, async ({ page: pw }) => {
@@ -49,7 +50,8 @@ test.describe('@analytics', () => {
         return { allow_local: g.allow_local, rewritten: typeof g.path === 'function' ? g.path('/work/x.html') : null };
       });
       expect(cfg.allow_local, 'staging on a private address must be allowed to count').toBe(true);
-      expect(cfg.rewritten, 'staging hits are prefixed so they never mix with live').toBe('/staging/work/x.html');
+      const want = page === '404.html' ? '/staging/404/work/x.html' : '/staging/work/x.html';
+      expect(cfg.rewritten, 'staging hits are prefixed so they never mix with live').toBe(want);
     });
 
     test(`loopback (tests, local dev): counter never loads — ${page}`, async ({ page: pw }) => {
