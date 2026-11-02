@@ -1,0 +1,79 @@
+#!/bin/bash
+# Repo-local pre-push name guard for this PUBLIC repo.
+#
+# The global guard blocks the site owner's own name, which is a false positive
+# here by construction: the site publishes that name on purpose. This hook keeps
+# the same fail-closed scan for everything else.
+#
+# Patterns come from two places:
+#   1. Built-in generic patterns below (home-directory paths).
+#   2. A LOCAL-ONLY token list at .git/name-guard-tokens.txt, one pattern per
+#      line, matched case-insensitively. It is never tracked. If it is missing,
+#      the push is refused: fail closed, never silently unguarded.
+#
+# Install on a fresh clone (copy, never reference in place: a relative hooks path
+# resolves per checkout, so a worktree on a branch without this file pushes unguarded):
+#   cp scripts/hooks/pre-push .git/hooks/pre-push
+#   git config --local core.hooksPath "$(git rev-parse --absolute-git-dir)/hooks"
+# Then create .git/name-guard-tokens.txt from the private token list.
+
+set -u
+# --git-common-dir, not --git-dir: linked worktrees share one token file.
+GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
+TOKENS_FILE="$GIT_COMMON_DIR/name-guard-tokens.txt"
+
+# Literals are split so this file never contains its own patterns verbatim.
+BLOCKED_PATTERNS=("/Users""/" "~""/")
+
+if [ ! -s "$TOKENS_FILE" ]; then
+  echo "ERROR: Push blocked — $TOKENS_FILE is missing or empty."
+  echo "Create it (one case-insensitive pattern per line) from your private token list, then retry."
+  exit 1
+fi
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in \#*) continue ;; esac               # full-line comments only; '#' may appear in a token
+  line="${line#"${line%%[![:space:]]*}"}"              # trim leading whitespace
+  line="${line%"${line##*[![:space:]]}"}"              # trim trailing whitespace; inner spaces are kept
+  [ -n "$line" ] && BLOCKED_PATTERNS+=("$line")
+done < "$TOKENS_FILE"
+
+fail() { echo "ERROR: Push blocked — $1"; exit 1; }
+
+scan_range() {
+  # $1 = commit range (or a single tip for a branch with no shared base).
+  # Every commit in the range is scanned on its own patch, so a token added in one
+  # commit and removed in a later one is still caught: the earlier commit is public too.
+  # --cc shows only lines a merge introduced itself. Any git error blocks the push.
+  local msgs patches names added
+  msgs=$(git log --format="%B" "$1" 2>&1)                         || fail "could not read commit messages for $1 (fetch, then retry)"
+  # --text: binary-classified files (or a stray NUL byte) are scanned too, not summarized away.
+  # --no-textconv / --no-ext-diff: scan the bytes that are published, not a filtered rendering.
+  patches=$(git -c core.quotePath=false log -p --cc --text --no-textconv --no-ext-diff --no-color --format= "$1" 2>&1) \
+    || fail "could not read patches for $1 (fetch, then retry)"
+  names=$(git -c core.quotePath=false log --name-only --cc --format= "$1" 2>&1) || fail "could not list changed paths for $1"
+  # Every '+' line, including '+++' ones: an added line whose own text starts with '++'
+  # renders as '+++' too. The extra '+++ b/<path>' headers only re-check paths.
+  added=$(printf '%s\n' "$patches" | grep '^+' || true)
+  for pattern in "${BLOCKED_PATTERNS[@]}"; do
+    # Short tokens (4 chars or fewer) match whole words only; longer ones match as substrings.
+    local w=""; [ "${#pattern}" -le 4 ] && w="-w"
+    printf '%s\n' "$msgs"  | grep -qiF $w -- "$pattern" && fail "a commit message contains '$pattern'"
+    printf '%s\n' "$added" | grep -qiF $w -- "$pattern" && fail "an added line contains '$pattern' (git log -p $1 | grep -i -- '$pattern')"
+    printf '%s\n' "$names" | grep -qiF $w -- "$pattern" && fail "a changed file path contains '$pattern'"
+  done
+  return 0
+}
+
+ZERO=0000000000000000000000000000000000000000
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$ZERO" ] && continue   # branch deletion: nothing to scan
+  if [ "$remote_sha" = "$ZERO" ]; then
+    # New remote branch: scan what is not already on origin/main; with no common base, scan everything.
+    base=$(git merge-base "$local_sha" origin/main 2>/dev/null || true)
+    scan_range "${base:+$base..}$local_sha"
+  else
+    git cat-file -e "$remote_sha^{commit}" 2>/dev/null || fail "remote tip $remote_sha is not available locally (fetch, then retry)"
+    scan_range "$remote_sha..$local_sha"
+  fi
+done
+exit 0
