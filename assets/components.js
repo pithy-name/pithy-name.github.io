@@ -1,27 +1,8 @@
-const SITE_LINKS = {
-  linkedin: 'https://www.linkedin.com/in/annakalil/',
-  substack: 'https://crosstrafficdoesnotstop.substack.com/notes',
-  github: 'https://github.com/pithy-name/',
-};
-
-// The copyright notice text is duplicated in each page's <noscript> footer fallback; keep them in sync.
-function renderFooter() {
-  const mount = document.getElementById('site-footer');
-  if (!mount) return;
-  mount.innerHTML = `
-    <div class="footer__inner">
-      <span class="footer__brand">Anna Kalil</span>
-      <ul class="footer__links">
-        <li><a class="footer__link" href="${SITE_LINKS.substack}" target="_blank" rel="noopener">Substack</a></li>
-        <li><a class="footer__link" href="${SITE_LINKS.linkedin}" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a class="footer__link" href="${SITE_LINKS.github}" target="_blank" rel="noopener">GitHub</a></li>
-      </ul>
-    </div>
-    <div class="footer__inner footer__inner--legal">
-      <p class="footer__legal">© 2026 Anna Kalil. All rights reserved. To request permission to reproduce this work, contact me through the links above.</p>
-    </div>
-  `;
-}
+---
+---
+// Jekyll fills SITE_LINKS from _data/links.yml, the one place profile URLs live. The footer is static
+// markup in _includes/footer.html, not rendered here.
+const SITE_LINKS = {{ site.data.links | jsonify }};
 
 function renderCtaLinks() {
   const mount = document.getElementById('cta-links');
@@ -135,7 +116,6 @@ function loadAnalytics() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderFooter();
   renderCtaLinks();
   renderSubstackCta();
   loadAnalytics();
