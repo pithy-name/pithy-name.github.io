@@ -32,7 +32,7 @@ npx playwright test                          # serves the tree on :8099 and runs
 - `index.html` — home page: hero, About, Experience, Selected Work (cards grouped by subhead), Writing, Contact. `404.html`.
 - `work/` — one article page per Selected Work card, sharing the `article-hero` / `article` classes. Add the card on `index.html`, the page here, and the URL to `sitemap.xml` together.
 - `style.css` — all styles, CSS custom properties at the top. `assets/components.js` — JS-rendered footer, contact buttons, Substack CTA; `SITE_LINKS` is the single place external profile URLs live. `assets/*.svg` — brand motifs.
-- `robots.txt` allows all and points at the sitemap.
+- `robots.txt` allows ordinary search engines and AI search/user fetchers, blocks AI training and bulk-scraping crawlers (list derived from the open-source ai.robots.txt project), and points at the sitemap. Tested by `tests/robots.spec.ts`.
 - `docs/` is gitignored: planning specs and anything stashed for review (`docs/_trash-review/`) live there, never published. Nothing is deleted from this repo; it is moved there and surfaced for the owner.
 - `.claude/worktrees/` — one worktree per branch, git-excluded. Main checkout stays on `main`.
 
