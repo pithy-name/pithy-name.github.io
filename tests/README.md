@@ -7,19 +7,21 @@ Playwright functional checks for the static site. **No visual/screenshot baselin
 ```bash
 npm ci
 npx playwright install chromium   # first time only
+export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"   # Ruby 3.3 for the Jekyll build; see CLAUDE.md for first-time setup
 npx playwright test               # all tags
 npx playwright test --grep @links # one tag
 ```
 
-The config (`playwright.config.ts`) starts a `python3 -m http.server` on port 8099 and points the tests at it, so `file://` quirks can't hide bugs.
+The config (`playwright.config.ts`) builds the site with `bundle exec jekyll build`, then starts a `python3 -m http.server` on port 8099 serving `_site/` and points the tests at it. The tests therefore check what GitHub Pages publishes, and `file://` quirks can't hide bugs.
 
 ## Tags
 
 | Tag | What it guarantees |
 |-----|--------------------|
-| `@links` | Every internal link resolves (no 404); the JS-injected social links (LinkedIn/Substack/GitHub) are present in every page footer; in-page `#anchors` have targets; every `sitemap.xml` entry resolves. |
-| `@links no-JS` | With JavaScript disabled, every page's footer still shows the LinkedIn, Substack, and GitHub links from its `<noscript>` fallback. |
-| `@links copyright notice` | Every page's footer shows the copyright notice and the ask-for-permission line, both as rendered by JavaScript and (with JavaScript off) from the `<noscript>` fallback. |
+| `@layout` | Every source page uses the shared layout (front matter, no hand-copied `<head>` or footer); the footer exists once in `_includes/footer.html` and is not re-rendered by script; each rendered page has exactly one footer; repo tooling (`CLAUDE.md`, package files, tests, scripts, Gemfile, `_config.yml`) is not published; site assets are. |
+| `@links` | Every internal link resolves (no 404); the social links (LinkedIn/Substack/GitHub) are present in every page footer; in-page `#anchors` have targets; every `sitemap.xml` entry resolves. |
+| `@links no-JS` | With JavaScript disabled, every page's footer still shows the LinkedIn, Substack, and GitHub links (the footer is static HTML from `_includes/footer.html`, not script-rendered). |
+| `@links copyright notice` | Every page's footer shows the copyright notice and the ask-for-permission line, with JavaScript on and off. |
 | `@robots` | `robots.txt` blocks AI training and bulk-scraping crawlers (a core set is asserted by name), leaves ordinary search engines and AI search/user-fetch bots (OAI-SearchBot, Claude-SearchBot, ChatGPT-User, Claude-User, PerplexityBot) allowed, allows everyone else, and still points at the sitemap. Advisory only: compliant crawlers honor it. |
 | `@responsive` | No horizontal overflow at 375 / 480 / 540 / 768 / 1280 px, checked at the document level and per element (so content clipped inside `overflow: hidden` containers is still caught; `aria-hidden` decoration may bleed); skip-link + hero nav present. |
 | `@console` | No `console.error` or uncaught page error on load of any page. |
