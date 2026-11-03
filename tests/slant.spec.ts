@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // The S.L.A.N.T. section on the hidden-loyalty landing page is a full-width navy band of five
 // cards (letter, name, description, auditor quote). Copy comes from the S.L.A.N.T. graphic in
 // the Substack post.
-const PAGE = '/work/hidden-loyalty-audit.html';
+const PAGE = '/work/secret-loyalty-audit.html';
 
 test.describe('@slant', () => {
   test('navy band with one card per letter, each with a name, description and auditor quote', async ({ page }) => {
