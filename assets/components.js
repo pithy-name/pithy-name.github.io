@@ -4,6 +4,7 @@ const SITE_LINKS = {
   github: 'https://github.com/pithy-name/',
 };
 
+// The copyright notice text is duplicated in each page's <noscript> footer fallback; keep them in sync.
 function renderFooter() {
   const mount = document.getElementById('site-footer');
   if (!mount) return;
@@ -15,7 +16,9 @@ function renderFooter() {
         <li><a class="footer__link" href="${SITE_LINKS.linkedin}" target="_blank" rel="noopener">LinkedIn</a></li>
         <li><a class="footer__link" href="${SITE_LINKS.github}" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
-      <p class="footer__copy">Cross traffic does not stop.</p>
+    </div>
+    <div class="footer__inner footer__inner--legal">
+      <p class="footer__legal">© 2026 Anna Kalil. All rights reserved. To request permission to reproduce this work, contact me through the links above.</p>
     </div>
   `;
 }
