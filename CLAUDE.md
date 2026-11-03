@@ -1,6 +1,15 @@
 # pithy-name.github.io
 
-Static personal site, served by GitHub Pages from `main`. No build step for the site itself: edit the HTML/CSS directly and it publishes as-is. The only tooling is the test suite below.
+Personal site, served by GitHub Pages from `main`, which builds it with Jekyll. Shared markup (`<head>`, skip link, footer, script tags) lives once in `_layouts/` and `_includes/`; each page is HTML with front matter that supplies its title and meta. Edit the footer in `_includes/footer.html` only. The `Gemfile` pins the same `github-pages` gem Pages builds with, so a local build matches the deployed site.
+
+## Build setup (Ruby 3.3, matching GitHub Pages)
+
+```bash
+brew install ruby@3.3                              # keg-only; first time
+export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"
+bundle config set --local path vendor/bundle && bundle install   # first time
+bundle exec jekyll build                           # writes _site/ (gitignored)
+```
 
 ## Fresh-clone setup (required before any push)
 
@@ -18,20 +27,21 @@ Without the token file, every push is refused. The hook scans added lines, commi
 
 ## Tests and CI
 
-Playwright functional checks (`tests/`), no screenshot baselines. Tags: `@links` (internal links, sitemap entries, footer social links, in-page anchors), `@responsive` (no horizontal overflow at phone through desktop widths), `@console` (no console errors on load). Pages are auto-discovered from disk, so a new `work/*.html` is covered without editing tests.
+Playwright functional checks (`tests/`), no screenshot baselines. Tags: `@links` (internal links, sitemap entries, footer social links, in-page anchors), `@layout` (shared layout is the single source; repo tooling is not published), `@responsive` (no horizontal overflow at phone through desktop widths), `@console` (no console errors on load). Pages are auto-discovered from disk, so a new `work/*.html` is covered without editing tests. Tests run against the built `_site/`, which is what gets published.
 
 ```bash
 npm ci && npx playwright install chromium   # first time
-npx playwright test                          # serves the tree on :8099 and runs everything
+npx playwright test                          # builds with Jekyll, serves _site/ on :8099, runs everything
 ```
 
 `.github/workflows/ci.yml` runs the suite on every PR into `main`; `main` is protected and only changes via PR. See `tests/README.md`.
 
 ## Layout
 
-- `index.html` — home page: hero, About, Experience, Selected Work (cards grouped by subhead), Writing, Contact. `404.html`.
-- `work/` — one article page per Selected Work card, sharing the `article-hero` / `article` classes. Add the card on `index.html`, the page here, and the URL to `sitemap.xml` together.
-- `style.css` — all styles, CSS custom properties at the top. `assets/components.js` — JS-rendered footer, contact buttons, Substack CTA; `SITE_LINKS` is the single place external profile URLs live. `assets/*.svg` — brand motifs.
+- `_config.yml` — Jekyll config; its `exclude:` keeps repo tooling (tests, scripts, `CLAUDE.md`, package files) out of the published site. `_layouts/default.html` — the page shell. `_includes/footer.html` — the one footer. `_data/links.yml` — the one place external profile URLs live (footer and `SITE_LINKS`).
+- `index.html` — home page: hero, About, Experience, Selected Work (cards grouped by subhead), Writing, Contact. `404.html`. Both start with front matter (`layout: default`, `title`, and for indexed pages `description` plus optional `og_title` / `og_description` / `og_type`).
+- `work/` — one article page per Selected Work card, sharing the `article-hero` / `article` classes. Add the card on `index.html`, the page here (with front matter), and the URL to `sitemap.xml` together. Use root-absolute paths in layouts; page bodies keep their relative links.
+- `style.css` — all styles, CSS custom properties at the top. `assets/components.js` — contact buttons, Substack CTA, analytics; Jekyll fills `SITE_LINKS` from `_data/links.yml`. `assets/*.svg` — brand motifs.
 - `robots.txt` allows ordinary search engines and AI search/user fetchers, blocks AI training and bulk-scraping crawlers (list derived from the open-source ai.robots.txt project), and points at the sitemap. Tested by `tests/robots.spec.ts`.
 - `docs/` is gitignored: planning specs and anything stashed for review (`docs/_trash-review/`) live there, never published. Nothing is deleted from this repo; it is moved there and surfaced for the owner.
 - `.claude/worktrees/` — one worktree per branch, git-excluded. Main checkout stays on `main`.
