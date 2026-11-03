@@ -93,19 +93,6 @@ img {
   height: auto;
 }
 
-/* --- Under-construction banner ------------------------------ */
-
-.construction-banner {
-  background: var(--gold);
-  color: var(--navy);
-  font-family: 'Libre Baskerville', Georgia, serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-align: center;
-  padding: 0.6rem var(--pad-x);
-  letter-spacing: 0.03em;
-}
-
 /* --- Layout utility --------------------------------------- */
 
 .inner {

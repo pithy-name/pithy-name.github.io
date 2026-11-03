@@ -16,7 +16,7 @@ function renderFooter() {
         <li><a class="footer__link" href="${SITE_LINKS.linkedin}" target="_blank" rel="noopener">LinkedIn</a></li>
         <li><a class="footer__link" href="${SITE_LINKS.github}" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
-      <p class="footer__copy">Cross traffic does not stop. &nbsp;·&nbsp; 🚧 Site under construction.</p>
+      <p class="footer__copy">Cross traffic does not stop.</p>
     </div>
     <div class="footer__inner footer__inner--legal">
       <p class="footer__legal">© 2026 Anna Kalil. All rights reserved. To request permission to reproduce this work, contact me through the links above.</p>
@@ -104,7 +104,15 @@ function tagOutboundLinks() {
   });
 }
 
+// #goatcounter-off only ever SETS GoatCounter's own opt-out flag for this origin. GoatCounter's
+// #toggle-goatcounter flips it, so a second load of a toggle link switches counting back on.
+function applyOptOut() {
+  if (location.hash !== '#goatcounter-off') return;
+  try { localStorage.setItem('skipgc', 't'); } catch (e) { /* storage blocked: nothing to set */ }
+}
+
 function loadAnalytics() {
+  applyOptOut();
   const host = location.hostname;
   if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || location.protocol === 'file:') return;
   const staging = host !== ANALYTICS.liveHost;
