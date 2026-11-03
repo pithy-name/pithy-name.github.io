@@ -72,6 +72,12 @@ test.describe('@slant', () => {
     });
   }
 
+  test('link preview text matches the hackathon paragraph under the title', async ({ page }) => {
+    await page.goto(PAGE);
+    const dek = (await page.locator('.article-hero__dek').innerText()).trim();
+    await expect(page.locator('meta[property="og:description"]')).toHaveAttribute('content', dek);
+  });
+
   test('quotes and descriptions match the design copy exactly', async ({ page }) => {
     await page.goto(PAGE);
     await expect(page.locator('.slant__desc')).toHaveText([
