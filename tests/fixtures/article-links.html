@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- Test-only fixture, not a site page. Stands in for an article that carries several links to one
+     host (two LessWrong posts) and a Google Slides link, so the outbound-click tests do not depend
+     on any real work page. -->
+<html lang="en">
+<head><meta charset="utf-8" /><title>Fixture</title></head>
+<body>
+  <main id="main">
+    <div class="article">
+      <p><a href="https://www.lesswrong.com/posts/aaaa/first-post">First post</a></p>
+      <p><a href="https://www.lesswrong.com/posts/bbbb/second-post">Second post</a></p>
+      <p><a href="https://docs.google.com/presentation/d/fixture/edit">The slide deck</a></p>
+    </div>
+  </main>
+  <footer class="footer" id="site-footer" role="contentinfo"></footer>
+  <script src="../../assets/components.js" defer></script>
+</body>
+</html>

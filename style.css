@@ -857,6 +857,7 @@ img {
 }
 
 .article .inner > h2 {
+  font-size: 1.5rem;
   margin-top: 2.75rem;
 }
 
@@ -921,6 +922,100 @@ img {
 .heuristic figure img {
   display: block;
   width: 100%;
+}
+
+/* --- S.L.A.N.T. band (hidden-loyalty page) ------------------ */
+
+.slant {
+  background: var(--navy);
+  color: var(--ivory);
+  margin: clamp(3rem, 6vw, 4.5rem) 0;
+  padding: clamp(3.5rem, 7vw, 5.5rem) var(--pad-x);
+}
+
+.slant__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  /* The card row is one graphic: S L A N T always read straight across and scale with the
+     row's width like an image. Card sizes below are the 1120px design in cqi (px / 1120 * 100). */
+  container-type: inline-size;
+}
+
+.slant__eyebrow {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.9rem;
+}
+
+.slant__title {
+  font-size: clamp(1.75rem, 3.5vw, 2.45rem);
+  color: var(--ivory);
+  margin-bottom: 0.9rem;
+}
+
+.slant__intro {
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--mist);
+  max-width: 720px;
+  margin-bottom: 2.75rem;
+}
+
+.article .slant__cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.4286cqi;
+}
+
+.article .slant__card {
+  background: #1A2740;
+  border-top: max(1px, 0.2679cqi) solid var(--gold);
+  padding: 2.5cqi 2.1429cqi;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25cqi;
+}
+
+.slant__letter {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 5.7143cqi;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.article .slant__name {
+  font-size: 1.6964cqi;
+  line-height: 1.25;
+  color: var(--ivory);
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.slant__desc {
+  font-size: 1.5179cqi;
+  line-height: 1.5;
+  color: var(--mist);
+  margin: 0;
+}
+
+.slant__quote {
+  font-size: 1.4286cqi;
+  line-height: 1.5;
+  font-style: italic;
+  color: #C9B98F;
+  border-top: 1px solid var(--slate);
+  padding-top: 1.25cqi;
+  margin: 0;
 }
 
 .article__footer-note {
