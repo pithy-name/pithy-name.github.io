@@ -1,9 +1,9 @@
 name: CI
 
-# Functional gate for the static site. Runs the Playwright suite (@links / @responsive
-# / @console) on every PR into main. Branch protection requires this check by name
-# ("Playwright (functional)"), so a broken link, layout overflow, or console error
-# cannot merge to the published branch.
+# Functional gate for the site. Builds it with Jekyll, then runs the Playwright suite
+# (@links / @responsive / @console / ...) against the built _site/ on every PR into main.
+# Branch protection requires this check by name ("Playwright (functional)"), so a broken
+# link, layout overflow, or console error cannot merge to the published branch.
 
 on:
   pull_request:
@@ -20,6 +20,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+
+      # Same build GitHub Pages runs: Ruby 3.3 + the pinned github-pages gem (see Gemfile).
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
 
       - uses: actions/setup-node@v4
         with:
