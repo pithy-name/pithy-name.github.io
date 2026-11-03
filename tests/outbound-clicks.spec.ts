@@ -100,8 +100,8 @@ test.describe('@analytics outbound clicks', () => {
     await serveAs(pw, LIVE, []);
     await pw.goto(`${LIVE}/index.html`);
     await expect(pw.locator('.work-card', { hasText: 'S.L.A.N.T.' }).locator('a.work-card__link'))
-      .toHaveAttribute('href', 'work/hidden-loyalty-audit.html');
-    await pw.goto(`${LIVE}/work/hidden-loyalty-audit.html`);
+      .toHaveAttribute('href', 'work/secret-loyalty-audit.html');
+    await pw.goto(`${LIVE}/work/secret-loyalty-audit.html`);
     const post = pw.locator('a[href="https://crosstrafficdoesnotstop.substack.com/p/can-humans-detect-hidden-loyalties"]');
     expect(await post.count(), 'prominent link to the full post').toBeGreaterThanOrEqual(1);
     expect(await post.first().getAttribute('data-goatcounter-click')).toBe('/outbound/article/substack');
