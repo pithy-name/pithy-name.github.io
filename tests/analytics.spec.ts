@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
-import { sitePages, SITE_ROOT } from './pages';
+import { sitePages, BUILD_ROOT } from './pages';
 
 const LIVE = 'https://pithy-name.github.io';
 const COUNTER = 'https://pithy-name.goatcounter.com/count';
@@ -18,7 +18,7 @@ async function serveAs(pw: import('@playwright/test').Page, origin: string) {
   // Serve the local tree under another hostname, and stub the counter script so no test sends a real count.
   await pw.route(`${origin}/**`, (route) => {
     const rel = new URL(route.request().url()).pathname.replace(/^\//, '') || 'index.html';
-    const file = path.join(SITE_ROOT, decodeURIComponent(rel));
+    const file = path.join(BUILD_ROOT, decodeURIComponent(rel));
     if (!fs.existsSync(file)) return route.fulfill({ status: 404, body: '' });
     return route.fulfill({ body: fs.readFileSync(file), contentType: TYPES[path.extname(file)] });
   });
