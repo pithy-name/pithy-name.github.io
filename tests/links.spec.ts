@@ -45,6 +45,14 @@ test.describe('@links', () => {
     });
   }
 
+  test('the S.L.A.N.T. page lives at work/secret-loyalty-audit.html, not the old hidden- name', async () => {
+    expect(fs.existsSync(path.join(SITE_ROOT, 'work', 'secret-loyalty-audit.html'))).toBe(true);
+    expect(fs.existsSync(path.join(SITE_ROOT, 'work', 'hidden-loyalty-audit.html'))).toBe(false);
+    const sitemap = fs.readFileSync(path.join(SITE_ROOT, 'sitemap.xml'), 'utf8');
+    expect(sitemap).toContain('/work/secret-loyalty-audit.html');
+    expect(sitemap).not.toContain('hidden-loyalty-audit');
+  });
+
   test('sitemap entries all resolve', async ({ request, baseURL }) => {
     const sitemap = fs.readFileSync(path.join(SITE_ROOT, 'sitemap.xml'), 'utf8');
     const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
