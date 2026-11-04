@@ -18,7 +18,7 @@ Without the token file, every push is refused. The hook scans added lines, commi
 
 ## Tests and CI
 
-Playwright functional checks (`tests/`), no screenshot baselines. Tags: `@links` (internal links, sitemap entries, footer social links, in-page anchors), `@responsive` (no horizontal overflow at phone through desktop widths), `@console` (no console errors on load). Pages are auto-discovered from disk, so a new `work/*.html` is covered without editing tests.
+Playwright functional checks (`tests/`), no screenshot baselines. Tags: `@links` (internal links, sitemap entries, footer social links, in-page anchors), `@responsive` (no horizontal overflow at phone through desktop widths), `@console` (no console errors on load), `@theme` (dark mode follows the OS, toggle persists across pages). Pages are auto-discovered from disk, so a new `work/*.html` is covered without editing tests.
 
 ```bash
 npm ci && npx playwright install chromium   # first time
