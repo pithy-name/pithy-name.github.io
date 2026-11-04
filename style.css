@@ -23,10 +23,55 @@
   --charcoal: #222222;
   --mist:   #D7DCE2;
 
+  /* Semantic aliases (Cross Traffic design system). Components use these,
+     never the base swatches, so [data-theme="dark"] only remaps aliases. */
+  --surface-hero:       var(--navy);
+  --surface-footer:     #0D1623;
+  --surface-body:       var(--ivory);
+  --surface-band:       #EDEAE2;
+  --surface-card:       var(--ivory);
+  --surface-card-draft: #F0EDE5;
+  --text-body:          var(--charcoal);
+  --text-heading:       var(--navy);
+  --text-subhead:       var(--slate);
+  --text-muted:         #595959;
+  --text-on-dark:       var(--ivory);
+  --text-on-dark-soft:  var(--mist);
+  --text-eyebrow:       var(--gold-deep);
+  --text-eyebrow-dark:  var(--gold);
+  --accent-text:        var(--gold-deep);
+  --link:               var(--slate);
+  --link-hover:         var(--gold-deep);
+  --border-soft:        var(--mist);
+  --border-accent:      var(--gold);
+  --shadow-card:        rgba(17, 28, 46, 0.06);
+
   --col-width: 720px;
   --pad-x: clamp(1.5rem, 5vw, 3rem);
   --pad-section: clamp(4rem, 8vw, 7rem);
   --leading: 1.75;
+}
+
+/* Dark theme: theme-toggle.js sets data-theme="dark" on <html> (stored
+   choice, else OS preference). Base swatches stay; only aliases remap. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-hero:       #0B1119;
+  --surface-footer:     #070C14;
+  --surface-body:       var(--navy);
+  --surface-band:       #0E1727;
+  --surface-card:       #1B2740;
+  --surface-card-draft: #1F2C46;
+  --text-body:          #E7E2D6;
+  --text-heading:       var(--ivory);
+  --text-subhead:       #A9BAD0;
+  --text-muted:         #9AA6B6;
+  --text-eyebrow:       var(--gold);
+  --accent-text:        var(--gold);
+  --link:               #CFB77E;
+  --link-hover:         var(--gold);
+  --border-soft:        rgba(181, 154, 91, 0.35);
+  --shadow-card:        rgba(0, 0, 0, 0.3);
 }
 
 html {
@@ -38,8 +83,8 @@ body {
   font-family: 'Newsreader', Georgia, serif;
   font-size: 1rem;
   line-height: var(--leading);
-  color: var(--charcoal);
-  background: var(--ivory);
+  color: var(--text-body);
+  background: var(--surface-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -55,14 +100,14 @@ h1, h2, h3, h4 {
 
 h2 {
   font-size: clamp(1.5rem, 3vw, 2rem);
-  color: var(--navy);
+  color: var(--text-heading);
   margin-bottom: 1.25rem;
 }
 
 h3 {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--slate);
+  color: var(--text-subhead);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
@@ -78,14 +123,14 @@ p:last-child {
 }
 
 a {
-  color: var(--slate);
+  color: var(--link);
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color 0.2s;
 }
 
 a:hover {
-  color: var(--gold-deep);
+  color: var(--link-hover);
 }
 
 img {
@@ -106,11 +151,11 @@ img {
 }
 
 .section--light {
-  background: var(--ivory);
+  background: var(--surface-body);
 }
 
 .section--off {
-  background: #EDEAE2;
+  background: var(--surface-band);
 }
 
 /* --- Section label ---------------------------------------- */
@@ -122,19 +167,19 @@ img {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--text-eyebrow);
   margin-bottom: 1.5rem;
 }
 
 .section-label--on-dark {
-  color: var(--gold);
+  color: var(--text-eyebrow-dark);
 }
 
 /* --- Divider ---------------------------------------------- */
 
 .divider {
   border: none;
-  border-top: 1px solid var(--mist);
+  border-top: 1px solid var(--border-soft);
   margin: 0;
 }
 
@@ -145,15 +190,15 @@ img {
   justify-content: center;
   align-items: center;
   padding: 1.1rem 0;
-  background: var(--ivory);
+  background: var(--surface-body);
 }
 
 .motif-divider--to-off {
-  background: linear-gradient(to bottom, var(--ivory), #EDEAE2);
+  background: linear-gradient(to bottom, var(--surface-body), var(--surface-band));
 }
 
 .motif-divider--to-light {
-  background: linear-gradient(to bottom, #EDEAE2, var(--ivory));
+  background: linear-gradient(to bottom, var(--surface-band), var(--surface-body));
 }
 
 .motif-divider svg {
@@ -166,8 +211,8 @@ img {
 
 .hero {
   position: relative;
-  background: var(--navy);
-  color: var(--ivory);
+  background: var(--surface-hero);
+  color: var(--text-on-dark);
   padding: clamp(5rem, 12vw, 9rem) 0 clamp(4rem, 9vw, 7rem);
   overflow: hidden;
 }
@@ -296,7 +341,7 @@ img {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-style: italic;
   font-size: 1.1rem;
-  color: var(--navy);
+  color: var(--text-heading);
   line-height: 1.65;
 }
 
@@ -305,8 +350,8 @@ img {
 .draft-block {
   margin-top: 2.5rem;
   padding: 1.5rem 1.75rem;
-  border: 2px dashed var(--gold-deep);
-  background: #F0EDE5;
+  border: 2px dashed var(--accent-text);
+  background: var(--surface-card-draft);
 }
 
 .draft-block__flag {
@@ -360,7 +405,7 @@ img {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--accent-text);
   margin-bottom: 0.6rem;
 }
 
@@ -368,7 +413,7 @@ img {
   font-family: 'Newsreader', Georgia, serif;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--charcoal);
+  color: var(--text-body);
   margin: 0;
 }
 
@@ -407,7 +452,7 @@ img {
 
 .experience-list li {
   padding-left: 1.5rem;
-  border-left: 1px solid var(--mist);
+  border-left: 1px solid var(--border-soft);
   position: relative;
 }
 
@@ -425,7 +470,7 @@ img {
 .experience-list li p {
   font-size: 1rem;
   line-height: 1.65;
-  color: var(--charcoal);
+  color: var(--text-body);
   margin: 0;
   max-width: none;
 }
@@ -437,7 +482,7 @@ img {
 .experience-list li strong {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text-heading);
   display: block;
   margin-bottom: 0.25rem;
   font-size: 0.95rem;
@@ -457,7 +502,7 @@ img {
   margin-top: 3rem;
   margin-bottom: 0.75rem;
   font-size: 1rem;
-  color: var(--navy);
+  color: var(--text-heading);
   text-transform: none;
   letter-spacing: 0;
 }
@@ -469,9 +514,9 @@ img {
 }
 
 .work-card {
-  background: var(--ivory);
-  border: 1px solid var(--mist);
-  border-top: 3px solid var(--gold);
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-top: 3px solid var(--border-accent);
   padding: 1.6rem 1.75rem;
 }
 
@@ -482,7 +527,7 @@ img {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--accent-text);
   margin-bottom: 0.6rem;
 }
 
@@ -490,7 +535,7 @@ img {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text-heading);
   text-transform: none;
   letter-spacing: 0;
   margin-bottom: 0.6rem;
@@ -499,7 +544,7 @@ img {
 .work-card__summary {
   font-size: 0.95rem;
   line-height: 1.65;
-  color: var(--charcoal);
+  color: var(--text-body);
   margin: 0;
   max-width: none;
 }
@@ -510,7 +555,7 @@ img {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--slate);
+  color: var(--link);
 }
 
 /* ============================================================
@@ -536,8 +581,8 @@ img {
 }
 
 .writing-card {
-  background: var(--ivory);
-  border: 1px solid var(--mist);
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
   padding: 1.5rem 1.75rem;
   text-decoration: none;
   color: inherit;
@@ -546,8 +591,8 @@ img {
 }
 
 .writing-card:hover {
-  border-color: var(--slate);
-  box-shadow: 0 2px 12px rgba(17, 28, 46, 0.06);
+  border-color: var(--link);
+  box-shadow: 0 2px 12px var(--shadow-card);
   color: inherit;
 }
 
@@ -558,7 +603,7 @@ img {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--accent-text);
   margin-bottom: 0.6rem;
 }
 
@@ -566,7 +611,7 @@ img {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text-heading);
   line-height: 1.4;
   margin-bottom: 0.6rem;
 }
@@ -574,26 +619,26 @@ img {
 .writing-card__summary {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #555;
+  color: var(--text-muted);
   margin: 0;
 }
 
 .writing-card--placeholder {
-  background: #F0EDE5;
+  background: var(--surface-card-draft);
   border-style: dashed;
 }
 
 .writing__cta {
   margin-top: 2rem;
   font-size: 0.9rem;
-  color: #595959;
+  color: var(--text-muted);
 }
 
 .writing__cta-link {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-weight: 700;
-  color: var(--gold-deep);
-  border-bottom: 1px solid var(--gold-deep);
+  color: var(--accent-text);
+  border-bottom: 1px solid var(--accent-text);
 }
 
 /* ============================================================
@@ -601,8 +646,8 @@ img {
    ============================================================ */
 
 .cta {
-  background: var(--navy);
-  color: var(--ivory);
+  background: var(--surface-hero);
+  color: var(--text-on-dark);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -694,7 +739,7 @@ img {
    ============================================================ */
 
 .footer {
-  background: #0D1623;
+  background: var(--surface-footer);
   color: var(--mist);
   padding: 2.5rem 0;
 }
@@ -768,8 +813,8 @@ img {
 
 .article-hero {
   position: relative;
-  background: var(--navy);
-  color: var(--ivory);
+  background: var(--surface-hero);
+  color: var(--text-on-dark);
   padding: clamp(3.5rem, 8vw, 5.5rem) 0 clamp(2.5rem, 6vw, 4rem);
   overflow: hidden;
 }
@@ -852,7 +897,7 @@ img {
 }
 
 .article {
-  background: var(--ivory);
+  background: var(--surface-body);
   padding: clamp(3rem, 7vw, 5rem) 0 clamp(4rem, 8vw, 6rem);
 }
 
@@ -867,7 +912,7 @@ img {
 
 .article h3 {
   margin-top: 2rem;
-  color: var(--navy);
+  color: var(--text-heading);
   text-transform: none;
   letter-spacing: 0;
   font-size: 1.05rem;
@@ -875,7 +920,7 @@ img {
 
 .article__callout {
   border-left: 3px solid var(--gold);
-  background: #EDEAE2;
+  background: var(--surface-band);
   padding: 1.25rem 1.5rem;
   margin: 1.75rem 0;
   font-size: 1rem;
@@ -905,14 +950,14 @@ img {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text-heading);
   margin-bottom: 0.6rem;
 }
 
 .heuristic figure {
   margin: 1rem 0 0;
-  border: 1px solid var(--mist);
-  background: #EDEAE2;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-band);
   padding: 0.5rem;
   max-width: 420px;
   /* reserve space while the GIF loads — limits layout shift */
@@ -927,7 +972,7 @@ img {
 /* --- S.L.A.N.T. band (hidden-loyalty page) ------------------ */
 
 .slant {
-  background: var(--navy);
+  background: var(--surface-hero);
   color: var(--ivory);
   margin: clamp(3rem, 6vw, 4.5rem) 0;
   padding: clamp(3.5rem, 7vw, 5.5rem) var(--pad-x);
@@ -1021,10 +1066,10 @@ img {
 .article__footer-note {
   margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--mist);
+  border-top: 1px solid var(--border-soft);
   font-size: 0.85rem;
   font-style: italic;
-  color: #595959;
+  color: var(--text-muted);
 }
 
 /* ============================================================
@@ -1074,4 +1119,32 @@ img {
   .heuristic figure {
     display: none;
   }
+}
+
+/* --- Theme toggle (button injected by assets/theme-toggle.js) --- */
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  min-height: 44px;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--surface-hero);
+  border: 1px solid var(--gold);
+  border-radius: 0;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: var(--gold);
+  color: var(--surface-hero);
 }
