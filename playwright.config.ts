@@ -1,8 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Functional CI for the static site. No visual/screenshot baselines (deliberate —
- * those churn on every design change). Tags: @links, @responsive, @console.
+ * Playwright tests for the static site: layout and functionality in Chromium, layout only
+ * in WebKit. No visual/screenshot baselines (deliberate — those churn on every design
+ * change). Layout tags: @responsive, @slant. Other tags: @links, @console, @analytics,
+ * @content, @robots.
  * Serves the repo root with Python's http.server so file:// quirks don't hide bugs.
  */
 export default defineConfig({
@@ -17,6 +19,9 @@ export default defineConfig({
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // Layout tests only, in WebKit (the engine behind Safari and every iPhone browser).
+    // CI runs this project in its own job, "WebKit (layout only)".
+    { name: 'webkit-iphone', use: { ...devices['iPhone 17e'] }, grep: /@responsive|@slant/ },
   ],
   webServer: {
     command: 'python3 -m http.server 8099 --bind 127.0.0.1',
