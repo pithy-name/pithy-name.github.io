@@ -1,6 +1,6 @@
-# Tests — functional CI safety net
+# Tests — CI safety net
 
-Playwright functional checks for the static site. **No visual/screenshot baselines** — deliberate, since those churn on every intentional design change. These check behavior, not pixels.
+Playwright tests for the static site: layout and functionality in Chromium, layout only in WebKit. **No visual/screenshot baselines** — deliberate, since those churn on every intentional design change. These check behavior, not pixels.
 
 ## Run locally
 
@@ -33,7 +33,7 @@ Pages are auto-discovered from disk (`tests/pages.ts`), so a new `work/*.html` i
 
 ## CI gate
 
-`.github/workflows/ci.yml` runs this suite on every PR into `main`. `main` is a protected branch with **"Playwright (functional)" as a required status check**, so a broken link, layout overflow, or console error cannot merge to the published branch. The check only runs on PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection setting, not code: if it is ever removed, re-add it by that exact name.)
+`.github/workflows/ci.yml` runs this suite on every PR into `main`. It runs two jobs at the same time: **"Playwright (Chromium)"** (every test) and **"Playwright (WebKit)"** (layout tests only, `@responsive` and `@slant`, on an iPhone 17e profile). `main` is a protected branch with both as required status checks, so a broken link, layout overflow, or console error cannot merge to the published branch. The check only runs on PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection setting, not code: if one is ever removed, re-add it by that exact name.)
 
 ## Reproducing a CI failure
 
