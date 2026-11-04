@@ -20,7 +20,7 @@ export default defineConfig({
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     // Layout tests only, in WebKit (the engine behind Safari and every iPhone browser).
-    // CI runs this project in its own job, "WebKit (layout only)".
+    // CI runs this project in its own job, "Playwright (WebKit)".
     { name: 'webkit-iphone', use: { ...devices['iPhone 17e'] }, grep: /@responsive|@slant/ },
   ],
   webServer: {
