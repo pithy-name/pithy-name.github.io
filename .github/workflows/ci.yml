@@ -1,12 +1,12 @@
 name: CI
 
 # Gate for the static site, on every PR into main. Two jobs run at the same time:
-#   - "Playwright (functional)": every Playwright test, layout and functionality, in
+#   - "Playwright (Chromium)": every Playwright test, layout and functionality, in
 #     Chromium (@links, @responsive, @slant, @console, @analytics, @content, @robots).
-#     Despite its name it runs the layout tests too. Branch protection requires this
-#     check by that exact name, so renaming it means updating branch protection too.
-#   - "WebKit (layout only)": the layout tests (@responsive, @slant) in WebKit on an
-#     iPhone profile, the engine Safari and iPhone browsers use.
+#   - "Playwright (WebKit)": the layout tests only (@responsive, @slant), in WebKit on
+#     an iPhone 17e profile; WebKit is the engine Safari and iPhone browsers use.
+# Branch protection requires checks by these exact names: renaming a job means
+# updating the required checks in branch protection at the same time.
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   playwright:
-    name: Playwright (functional)
+    name: Playwright (Chromium)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -49,7 +49,7 @@ jobs:
           retention-days: 7
 
   webkit:
-    name: WebKit (layout only)
+    name: Playwright (WebKit)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
