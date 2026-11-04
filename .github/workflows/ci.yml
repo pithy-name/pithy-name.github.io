@@ -1,9 +1,12 @@
 name: CI
 
-# Functional gate for the static site. Runs the Playwright suite (@links / @responsive
-# / @console) on every PR into main. Branch protection requires this check by name
-# ("Playwright (functional)"), so a broken link, layout overflow, or console error
-# cannot merge to the published branch.
+# Gate for the static site, on every PR into main. Two jobs run at the same time:
+#   - "Playwright (functional)": every Playwright test, layout and functionality, in
+#     Chromium (@links, @responsive, @slant, @console, @analytics, @content, @robots).
+#     Despite its name it runs the layout tests too. Branch protection requires this
+#     check by that exact name, so renaming it means updating branch protection too.
+#   - "WebKit (layout only)": the layout tests (@responsive, @slant) in WebKit on an
+#     iPhone profile, the engine Safari and iPhone browsers use.
 
 on:
   pull_request:
@@ -32,14 +35,45 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run functional suite
-        run: npx playwright test
+      - name: Run full suite (Chromium)
+        run: npx playwright test --project=chromium
 
       - name: Upload report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  webkit:
+    name: WebKit (layout only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install WebKit
+        run: npx playwright install --with-deps webkit
+
+      - name: Run layout tests (WebKit, iPhone 17e)
+        run: npx playwright test --project=webkit-iphone
+
+      - name: Upload report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-webkit
           path: |
             playwright-report/
             test-results/
