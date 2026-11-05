@@ -29,8 +29,8 @@ is covered without editing tests.
 browsers are installed locally. To rerun CI on a pushed branch:
 `gh workflow run ci.yml --ref <branch>`.
 
-Visual checks before showing work use the already-installed Google Chrome, headless, with
-a throwaway profile; nothing is installed for them.
+Visual checks during development before showing work use the already-installed Google
+Chrome, headless, with a throwaway profile; nothing is installed locally.
 
 ## Layout
 
