@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
-import { sitePages, BUILD_ROOT } from './pages';
+import { sitePages, BUILD_ROOT, SITE_ROOT } from './pages';
 
 const LIVE = 'https://pithy-name.github.io';
 const STAGING = 'http://staging.test:8088';
@@ -18,7 +18,9 @@ const TYPES: Record<string, string> = {
 async function serveAs(pw: Page, origin: string, sent: URL[]) {
   await pw.route(`${origin}/**`, (route) => {
     const rel = new URL(route.request().url()).pathname.replace(/^\//, '') || 'index.html';
-    const file = path.join(BUILD_ROOT, decodeURIComponent(rel));
+    // Test fixtures are not part of the published site, so they come from the repo; everything else from the build.
+    const root = rel.startsWith('tests/') ? SITE_ROOT : BUILD_ROOT;
+    const file = path.join(root, decodeURIComponent(rel));
     if (!fs.existsSync(file)) return route.fulfill({ status: 404, body: '' });
     return route.fulfill({ body: fs.readFileSync(file), contentType: TYPES[path.extname(file)] });
   });
