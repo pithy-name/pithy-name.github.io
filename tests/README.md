@@ -1,15 +1,15 @@
-# Tests — functional CI safety net
+# Tests — CI safety net
 
-Playwright functional checks for the static site. **No visual/screenshot baselines** — deliberate, since those churn on every intentional design change. These check behavior, not pixels.
+Playwright tests for the static site: layout and functionality in Chromium, layout only in
+WebKit. **No visual/screenshot baselines** — deliberate, since those churn on every
+intentional design change. These check behavior, not pixels.
 
-## Run locally
+## Running the tests
 
-```bash
-npm ci
-npx playwright install chromium   # first time only
-npx playwright test               # all tags
-npx playwright test --grep @links # one tag
-```
+The tests run in GitHub Actions on every PR into `main` (see "CI gate" below), not on a
+local machine: no npm packages or browsers are installed locally. To rerun CI on a pushed
+branch: `gh workflow run ci.yml --ref <branch>`. Each job's exact command is in
+`.github/workflows/ci.yml`.
 
 The config (`playwright.config.ts`) starts a `python3 -m http.server` on port 8099 and points the tests at it, so `file://` quirks can't hide bugs.
 
@@ -22,6 +22,7 @@ The config (`playwright.config.ts`) starts a `python3 -m http.server` on port 80
 | `@links copyright notice` | Every page's footer shows the copyright notice and the ask-for-permission line, both as rendered by JavaScript and (with JavaScript off) from the `<noscript>` fallback. |
 | `@robots` | `robots.txt` blocks AI training and bulk-scraping crawlers (a core set is asserted by name), leaves ordinary search engines and AI search/user-fetch bots (OAI-SearchBot, Claude-SearchBot, ChatGPT-User, Claude-User, PerplexityBot) allowed, allows everyone else, and still points at the sitemap. Advisory only: compliant crawlers honor it. |
 | `@responsive` | No horizontal overflow at 375 / 480 / 540 / 768 / 1280 px, checked at the document level and per element (so content clipped inside `overflow: hidden` containers is still caught; `aria-hidden` decoration may bleed); skip-link + hero nav present. |
+| `@slant` | On the S.L.A.N.T. page, the five cards stay in one row in letter order and scale with the page from 320 to 1440px, still hold with web fonts blocked, the copy matches the design, and the link preview matches the opening paragraph. |
 | `@console` | No `console.error` or uncaught page error on load of any page. |
 | `@content` | No page mentions being under construction or shows the construction banner, in its HTML or in anything rendered by script. Guards against the wording coming back after the banner removal. |
 | `@analytics` | Per page, three host cases: on the live domain the cookieless GoatCounter script loads with real paths; on any other non-loopback host (LAN staging) it loads with every path prefixed `/staging`; on loopback (local dev, CI) it never loads. Hosts are simulated by routing to the local files and the counter script is stubbed, so no test sends a real count. This proves the wiring, not that counts arrive: confirm that on staging and in the dashboard. |
@@ -33,8 +34,15 @@ Pages are auto-discovered from disk (`tests/pages.ts`), so a new `work/*.html` i
 
 ## CI gate
 
-`.github/workflows/ci.yml` runs this suite on every PR into `main`. `main` is a protected branch with **"Playwright (functional)" as a required status check**, so a broken link, layout overflow, or console error cannot merge to the published branch. The check only runs on PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection setting, not code: if it is ever removed, re-add it by that exact name.)
+`.github/workflows/ci.yml` runs this suite on every PR into `main`. It runs two jobs at
+the same time: **"Playwright (Chromium)"** (every test) and **"Playwright (WebKit)"**
+(layout tests only; which tags and which device are set in `playwright.config.ts`). `main`
+is a protected branch with both as required status checks, so a broken link, layout
+overflow, or console error cannot merge to the published branch. The check only runs on
+PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection
+setting, not code: if one is ever removed, re-add it by that exact name.)
 
 ## Reproducing a CI failure
 
-The workflow uploads the HTML report (`playwright-report/`) and any traces (`test-results/`) as one artifact on every run. Download it from the failed run, or reproduce locally with `npm test`.
+The workflow uploads the HTML report (`playwright-report/`) and any traces
+(`test-results/`) as one artifact on every run. Download it from the failed run.
