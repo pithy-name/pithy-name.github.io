@@ -1,10 +1,15 @@
 # Tests — CI safety net
 
-Playwright tests for the static site: layout and functionality in Chromium, layout only in WebKit. **No visual/screenshot baselines** — deliberate, since those churn on every intentional design change. These check behavior, not pixels.
+Playwright tests for the static site: layout and functionality in Chromium, layout only in
+WebKit. **No visual/screenshot baselines** — deliberate, since those churn on every
+intentional design change. These check behavior, not pixels.
 
 ## Running the tests
 
-The tests run in GitHub Actions on every PR into `main` (see "CI gate" below), not on a local machine: no npm packages or browsers are installed locally. To rerun CI on a pushed branch: `gh workflow run ci.yml --ref <branch>`. Each job's exact command is in `.github/workflows/ci.yml`.
+The tests run in GitHub Actions on every PR into `main` (see "CI gate" below), not on a
+local machine: no npm packages or browsers are installed locally. To rerun CI on a pushed
+branch: `gh workflow run ci.yml --ref <branch>`. Each job's exact command is in
+`.github/workflows/ci.yml`.
 
 The config (`playwright.config.ts`) starts a `python3 -m http.server` on port 8099 and points the tests at it, so `file://` quirks can't hide bugs.
 
@@ -29,8 +34,15 @@ Pages are auto-discovered from disk (`tests/pages.ts`), so a new `work/*.html` i
 
 ## CI gate
 
-`.github/workflows/ci.yml` runs this suite on every PR into `main`. It runs two jobs at the same time: **"Playwright (Chromium)"** (every test) and **"Playwright (WebKit)"** (layout tests only; which tags and which device are set in `playwright.config.ts`). `main` is a protected branch with both as required status checks, so a broken link, layout overflow, or console error cannot merge to the published branch. The check only runs on PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection setting, not code: if one is ever removed, re-add it by that exact name.)
+`.github/workflows/ci.yml` runs this suite on every PR into `main`. It runs two jobs at
+the same time: **"Playwright (Chromium)"** (every test) and **"Playwright (WebKit)"**
+(layout tests only; which tags and which device are set in `playwright.config.ts`). `main`
+is a protected branch with both as required status checks, so a broken link, layout
+overflow, or console error cannot merge to the published branch. The check only runs on
+PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection
+setting, not code: if one is ever removed, re-add it by that exact name.)
 
 ## Reproducing a CI failure
 
-The workflow uploads the HTML report (`playwright-report/`) and any traces (`test-results/`) as one artifact on every run. Download it from the failed run.
+The workflow uploads the HTML report (`playwright-report/`) and any traces
+(`test-results/`) as one artifact on every run. Download it from the failed run.
