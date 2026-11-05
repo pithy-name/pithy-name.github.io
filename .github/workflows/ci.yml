@@ -45,6 +45,15 @@ jobs:
       - name: Run full suite (Chromium)
         run: npx playwright test --project=chromium
 
+      # The Jekyll-built site the tests ran against, for a visual check outside CI.
+      - name: Upload built site
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: _site/
+          retention-days: 7
+
       - name: Upload report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
