@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 jobs:
-  playwright:
+  chromium:
     name: Playwright (Chromium)
     runs-on: ubuntu-latest
     timeout-minutes: 15
