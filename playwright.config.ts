@@ -3,8 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * Playwright tests for the static site: layout and functionality in Chromium, layout only
  * in WebKit. No visual/screenshot baselines (deliberate — those churn on every design
- * change). Layout tags: @responsive, @slant. Other tags: @links, @console, @analytics,
- * @content, @robots.
+ * change). Tags and what each covers: tests/README.md.
  * Serves the repo root with Python's http.server so file:// quirks don't hide bugs.
  */
 export default defineConfig({
