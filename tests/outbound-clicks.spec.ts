@@ -71,7 +71,7 @@ test.describe('@analytics outbound clicks', () => {
   test('each click event carries its exact destination URL as the referrer', async ({ page: pw }) => {
     const sent: URL[] = [];
     await serveAs(pw, LIVE, sent);
-    await pw.goto(`${LIVE}/work/hidden-loyalty-audit.html`);
+    await pw.goto(`${LIVE}/tests/fixtures/article-links.html`);
     const lw = pw.locator('a[href*="lesswrong.com"]');
     const hrefs = await lw.evaluateAll((els) => els.map((a) => (a as HTMLAnchorElement).href));
     expect(hrefs.length, 'this page has more than one LessWrong link').toBeGreaterThan(1);
@@ -96,9 +96,24 @@ test.describe('@analytics outbound clicks', () => {
     expect(await tag('.work-card a[href*="glamour-ships"]')).toBe('/outbound/card/github');
   });
 
+  test('the S.L.A.N.T. landing page sends readers to the full Substack post', async ({ page: pw }) => {
+    await serveAs(pw, LIVE, []);
+    await pw.goto(`${LIVE}/index.html`);
+    await expect(pw.locator('.work-card', { hasText: 'S.L.A.N.T.' }).locator('a.work-card__link'))
+      .toHaveAttribute('href', 'work/hidden-loyalty-audit.html');
+    await pw.goto(`${LIVE}/work/hidden-loyalty-audit.html`);
+    const post = pw.locator('a[href="https://crosstrafficdoesnotstop.substack.com/p/can-humans-detect-hidden-loyalties"]');
+    expect(await post.count(), 'prominent link to the full post').toBeGreaterThanOrEqual(1);
+    expect(await post.first().getAttribute('data-goatcounter-click')).toBe('/outbound/article/substack');
+    await expect(pw.locator('main h2', { hasText: 'The experiment' }), 'page is a landing page, not the full article').toHaveCount(0);
+    expect(await pw.locator('main h2').allTextContents(), 'only the S.L.A.N.T. heading; no See more section')
+      .toEqual(['S.L.A.N.T. — how to catch it yourself']);
+    await expect(pw.locator('main', { hasText: 'Team:' }), 'team credit stays at the bottom').toHaveCount(1);
+  });
+
   test('Google products get specific names', async ({ page: pw }) => {
     await serveAs(pw, LIVE, []);
-    await pw.goto(`${LIVE}/work/hidden-loyalty-audit.html`);
+    await pw.goto(`${LIVE}/tests/fixtures/article-links.html`);
     expect(await pw.locator('a[href*="docs.google.com/presentation"]').first().getAttribute('data-goatcounter-click'))
       .toBe('/outbound/article/google-slides');
   });

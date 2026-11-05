@@ -1,7 +1,7 @@
 {
   "name": "pithy-name-site-tests",
   "private": true,
-  "description": "Functional CI safety net for the static site (Playwright)",
+  "description": "Playwright tests for the static site, run in GitHub CI: layout and functionality in Chromium, layout only in WebKit",
   "scripts": {
     "test": "playwright test"
   },

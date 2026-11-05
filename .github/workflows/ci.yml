@@ -1,9 +1,13 @@
 name: CI
 
-# Functional gate for the site. Builds it with Jekyll, then runs the Playwright suite
-# (@links / @responsive / @console / ...) against the built _site/ on every PR into main.
-# Branch protection requires this check by name ("Playwright (functional)"), so a broken
-# link, layout overflow, or console error cannot merge to the published branch.
+# Gate for the site, on every PR into main. Both jobs build the site with Jekyll (the same
+# build GitHub Pages runs; Playwright's webServer runs `bundle exec jekyll build`) and test
+# the built _site/. Two jobs run at the same time:
+#   - "Playwright (Chromium)": every Playwright test, layout and functionality.
+#   - "Playwright (WebKit)": the layout tests only, in WebKit, the engine Safari and
+#     iPhone browsers use. Which tests and which device: see playwright.config.ts.
+# Branch protection requires checks by these exact names: renaming a job means
+# updating the required checks in the repo's Branches settings at the same time.
 
 on:
   pull_request:
@@ -14,8 +18,8 @@ permissions:
   contents: read
 
 jobs:
-  playwright:
-    name: Playwright (functional)
+  chromium:
+    name: Playwright (Chromium)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -38,14 +42,51 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run functional suite
-        run: npx playwright test
+      - name: Run full suite (Chromium)
+        run: npx playwright test --project=chromium
 
       - name: Upload report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  webkit:
+    name: Playwright (WebKit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same build GitHub Pages runs: Ruby 3.3 + the pinned github-pages gem (see Gemfile).
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install WebKit
+        run: npx playwright install --with-deps webkit
+
+      - name: Run layout tests (WebKit)
+        run: npx playwright test --project=webkit-iphone
+
+      - name: Upload report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-webkit
           path: |
             playwright-report/
             test-results/

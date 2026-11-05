@@ -1,15 +1,12 @@
 # pithy-name.github.io
 
-Personal site, served by GitHub Pages from `main`, which builds it with Jekyll. Shared markup (`<head>`, skip link, footer, script tags) lives once in `_layouts/` and `_includes/`; each page is HTML with front matter that supplies its title and meta. Edit the footer in `_includes/footer.html` only. The `Gemfile` pins the same `github-pages` gem Pages builds with, so a local build matches the deployed site.
+Personal site, served by GitHub Pages from `main`, which builds it with Jekyll. Shared markup (`<head>`, skip link, footer, script tags) lives once in `_layouts/` and `_includes/`; each page is HTML with front matter that supplies its title and meta. Edit the footer in `_includes/footer.html` only. The `Gemfile` pins the same `github-pages` gem Pages builds with, so the CI build matches the deployed site.
 
-## Build setup (Ruby 3.3, matching GitHub Pages)
+## Build
 
-```bash
-brew install ruby@3.3                              # keg-only; first time
-export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"
-bundle config set --local path vendor/bundle && bundle install   # first time
-bundle exec jekyll build                           # writes _site/ (gitignored)
-```
+GitHub Pages builds the site with Jekyll on every push to `main`. CI builds it the same way
+(Ruby 3.3 and the pinned `github-pages` gem, via `ruby/setup-ruby`) before both test jobs,
+so the tests check the built `_site/`. Nothing is built or installed locally.
 
 ## Fresh-clone setup (required before any push)
 
@@ -27,14 +24,20 @@ Without the token file, every push is refused. The hook scans added lines, commi
 
 ## Tests and CI
 
-Playwright functional checks (`tests/`), no screenshot baselines. Tags: `@links` (internal links, sitemap entries, footer social links, in-page anchors), `@layout` (shared layout is the single source; repo tooling is not published), `@responsive` (no horizontal overflow at phone through desktop widths), `@console` (no console errors on load). Pages are auto-discovered from disk, so a new `work/*.html` is covered without editing tests. Tests run against the built `_site/`, which is what gets published.
+Playwright tests (`tests/`): layout and functionality in Chromium, layout only in WebKit.
+No screenshot baselines. Tags and what each covers: `tests/README.md`. Every page is
+tested: `index.html`, `404.html` and each `work/*.html`, found on disk, so a new work page
+is covered without editing tests. Tests run against the Jekyll-built `_site/`, which is
+what gets published.
 
-```bash
-npm ci && npx playwright install chromium   # first time
-npx playwright test                          # builds with Jekyll, serves _site/ on :8099, runs everything
-```
+`.github/workflows/ci.yml` runs two jobs on every PR into `main`, "Playwright (Chromium)"
+(every test) and "Playwright (WebKit)" (layout tests only); both are required checks.
+`main` is protected and only changes via PR. Tests run only in CI: no npm packages or
+browsers are installed locally. To rerun CI on a pushed branch:
+`gh workflow run ci.yml --ref <branch>`.
 
-`.github/workflows/ci.yml` runs the suite on every PR into `main`; `main` is protected and only changes via PR. See `tests/README.md`.
+Visual checks during development before showing work use the already-installed Google
+Chrome, headless, with a throwaway profile; nothing is installed locally.
 
 ## Layout
 

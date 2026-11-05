@@ -1,9 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Functional CI for the static site. No visual/screenshot baselines (deliberate —
- * those churn on every design change). Tags: @links, @responsive, @console.
- * Builds the site with Jekyll and serves _site/ with Python's http.server so file:// quirks don't hide bugs.
+ * Playwright tests for the site: layout and functionality in Chromium, layout only
+ * in WebKit. No visual/screenshot baselines (deliberate — those churn on every design
+ * change). Tags and what each covers: tests/README.md.
+ * Builds the site with Jekyll and serves _site/ with Python's http.server, so tests check
+ * what GitHub Pages publishes and file:// quirks don't hide bugs.
  */
 export default defineConfig({
   testDir: './tests',
@@ -17,6 +19,9 @@ export default defineConfig({
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // Layout tests only, in WebKit (the engine behind Safari and every iPhone browser).
+    // CI runs this project in its own job, "Playwright (WebKit)".
+    { name: 'webkit-iphone', use: { ...devices['iPhone 17e'] }, grep: /@responsive|@slant/ },
   ],
   webServer: {
     // Build the site with Jekyll (same build GitHub Pages runs), then serve the output.

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { sitePages } from './pages';
+import { sitePages, workPages } from './pages';
 
 // Widths chosen around the site's own CSS breakpoints (480/540/560) plus common devices.
 const WIDTHS = [375, 480, 540, 768, 1280];
@@ -38,6 +38,15 @@ test.describe('@responsive', () => {
         expect(offenders, `elements past the viewport edge at ${w}px:\n${offenders.join('\n')}`).toEqual([]);
       });
     }
+  }
+
+  for (const page of workPages()) {
+    test(`article section headings stay modest at desktop — ${page}`, async ({ page: pw }) => {
+      await pw.setViewportSize({ width: 1440, height: 900 });
+      await pw.goto(`/${page}`);
+      const sizes = await pw.$$eval('.article .inner h2', (els) => els.map((e) => parseFloat(getComputedStyle(e).fontSize)));
+      for (const px of sizes) expect(px, 'h2 at most 1.5rem (27px on the 18px body)').toBeLessThanOrEqual(27);
+    });
   }
 
   test('skip-link and hero nav present — index', async ({ page }) => {
