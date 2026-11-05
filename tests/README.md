@@ -29,7 +29,7 @@ Pages are auto-discovered from disk (`tests/pages.ts`), so a new `work/*.html` i
 
 ## CI gate
 
-`.github/workflows/ci.yml` runs this suite on every PR into `main`. It runs two jobs at the same time: **"Playwright (Chromium)"** (every test) and **"Playwright (WebKit)"** (layout tests only, `@responsive` and `@slant`, on an iPhone 17e profile). `main` is a protected branch with both as required status checks, so a broken link, layout overflow, or console error cannot merge to the published branch. The check only runs on PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection setting, not code: if one is ever removed, re-add it by that exact name.)
+`.github/workflows/ci.yml` runs this suite on every PR into `main`. It runs two jobs at the same time: **"Playwright (Chromium)"** (every test) and **"Playwright (WebKit)"** (layout tests only; which tags and which device are set in `playwright.config.ts`). `main` is a protected branch with both as required status checks, so a broken link, layout overflow, or console error cannot merge to the published branch. The check only runs on PRs, so `main` changes via PR, not direct push. (The required check is a branch-protection setting, not code: if one is ever removed, re-add it by that exact name.)
 
 ## Reproducing a CI failure
 
