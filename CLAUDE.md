@@ -18,9 +18,19 @@ Without the token file, every push is refused. The hook scans added lines, commi
 
 ## Tests and CI
 
-Playwright tests (`tests/`): layout and functionality in Chromium, layout only in WebKit (iPhone 17e profile). No screenshot baselines. Layout tags: `@responsive` (no horizontal overflow at phone through desktop widths), `@slant` (S.L.A.N.T. cards stay in one row and scale). Other tags: `@links` (internal links, sitemap entries, footer social links, in-page anchors), `@console` (no console errors on load), `@analytics` (GoatCounter loading, labels, click tracking, opt-out), `@content` (no under-construction text), `@robots` (`robots.txt` rules). Pages are auto-discovered from disk, so a new `work/*.html` is covered without editing tests.
+Playwright tests (`tests/`): layout and functionality in Chromium, layout only in WebKit.
+No screenshot baselines. Tags and what each covers: `tests/README.md`. Every page is
+tested: `index.html`, `404.html` and each `work/*.html`, found on disk, so a new work page
+is covered without editing tests.
 
-`.github/workflows/ci.yml` runs two jobs on every PR into `main`: "Playwright (Chromium)" (every test) and "Playwright (WebKit)" (layout tests only). Both are required checks; `main` is protected and only changes via PR. Tests run only in CI: no npm packages or browsers are installed locally. To rerun CI on a pushed branch: `gh workflow run ci.yml --ref <branch>`. See `tests/README.md`.
+`.github/workflows/ci.yml` runs two jobs on every PR into `main`, "Playwright (Chromium)"
+(every test) and "Playwright (WebKit)" (layout tests only); both are required checks.
+`main` is protected and only changes via PR. Tests run only in CI: no npm packages or
+browsers are installed locally. To rerun CI on a pushed branch:
+`gh workflow run ci.yml --ref <branch>`.
+
+Visual checks before showing work use the already-installed Google Chrome, headless, with
+a throwaway profile; nothing is installed for them.
 
 ## Layout
 
