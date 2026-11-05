@@ -1,12 +1,11 @@
 name: CI
 
 # Gate for the static site, on every PR into main. Two jobs run at the same time:
-#   - "Playwright (Chromium)": every Playwright test, layout and functionality, in
-#     Chromium (@links, @responsive, @slant, @console, @analytics, @content, @robots).
-#   - "Playwright (WebKit)": the layout tests only (@responsive, @slant), in WebKit on
-#     an iPhone 17e profile; WebKit is the engine Safari and iPhone browsers use.
+#   - "Playwright (Chromium)": every Playwright test, layout and functionality.
+#   - "Playwright (WebKit)": the layout tests only, in WebKit, the engine Safari and
+#     iPhone browsers use. Which tests and which device: see playwright.config.ts.
 # Branch protection requires checks by these exact names: renaming a job means
-# updating the required checks in branch protection at the same time.
+# updating the required checks in the repo's Branches settings at the same time.
 
 on:
   pull_request:
@@ -66,7 +65,7 @@ jobs:
       - name: Install WebKit
         run: npx playwright install --with-deps webkit
 
-      - name: Run layout tests (WebKit, iPhone 17e)
+      - name: Run layout tests (WebKit)
         run: npx playwright test --project=webkit-iphone
 
       - name: Upload report
