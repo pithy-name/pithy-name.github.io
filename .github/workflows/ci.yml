@@ -1,6 +1,8 @@
 name: CI
 
-# Gate for the static site, on every PR into main. Two jobs run at the same time:
+# Gate for the site, on every PR into main. Both jobs build the site with Jekyll (the same
+# build GitHub Pages runs; Playwright's webServer runs `bundle exec jekyll build`) and test
+# the built _site/. Two jobs run at the same time:
 #   - "Playwright (Chromium)": every Playwright test, layout and functionality.
 #   - "Playwright (WebKit)": the layout tests only, in WebKit, the engine Safari and
 #     iPhone browsers use. Which tests and which device: see playwright.config.ts.
@@ -23,6 +25,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Same build GitHub Pages runs: Ruby 3.3 + the pinned github-pages gem (see Gemfile).
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -36,6 +44,15 @@ jobs:
 
       - name: Run full suite (Chromium)
         run: npx playwright test --project=chromium
+
+      # The Jekyll-built site the tests ran against, for a visual check outside CI.
+      - name: Upload built site
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: _site/
+          retention-days: 7
 
       - name: Upload report
         if: ${{ !cancelled() }}
@@ -53,6 +70,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+
+      # Same build GitHub Pages runs: Ruby 3.3 + the pinned github-pages gem (see Gemfile).
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
 
       - uses: actions/setup-node@v4
         with:

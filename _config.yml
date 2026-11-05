@@ -1,0 +1,23 @@
+# Jekyll config. GitHub Pages builds the site from `main` with this file.
+title: Anna Kalil
+url: https://pithy-name.github.io
+
+# Keep URLs as written: pages are *.html and the hand-maintained sitemap.xml lists them.
+# No permalink override and no jekyll-sitemap plugin.
+
+# Repo tooling and docs are not part of the site; never publish them.
+exclude:
+  - CLAUDE.md
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - playwright.config.ts
+  - playwright-report
+  - test-results
+  - tests
+  - scripts
+  - docs
+  - node_modules
+  - vendor
+  - .claude

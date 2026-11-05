@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { sitePages } from './pages';
 
-// With JavaScript off, the footer's social links come from the <noscript> fallback.
-// Every page must have it, so crawlers and no-JS visitors still see them.
+// The footer is static HTML (_includes/footer.html), so its social links are present with
+// JavaScript off. Crawlers and no-JS visitors rely on this.
 test.describe('@links no-JS', () => {
   test.use({ javaScriptEnabled: false });
   for (const page of sitePages()) {

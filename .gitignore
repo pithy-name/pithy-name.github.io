@@ -6,3 +6,10 @@ node_modules/
 test-results/
 playwright-report/
 blob-report/
+
+# Jekyll
+_site/
+.jekyll-cache/
+.sass-cache/
+vendor/
+.bundle/

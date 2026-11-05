@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
-import { SITE_ROOT } from './pages';
+import { BUILD_ROOT } from './pages';
 
 // #goatcounter-off only ever SETS GoatCounter's own opt-out flag (localStorage skipgc = 't').
 // Unlike GoatCounter's #toggle-goatcounter, loading it again never switches counting back on,
@@ -13,7 +13,7 @@ const COUNT_JS = fs.readFileSync(path.join(__dirname, 'fixtures', 'goatcounter-c
 async function serveAs(pw: import('@playwright/test').Page, origin: string, sent: string[]) {
   await pw.route(`${origin}/**`, (route) => {
     const rel = new URL(route.request().url()).pathname.replace(/^\//, '') || 'index.html';
-    const file = path.join(SITE_ROOT, decodeURIComponent(rel));
+    const file = path.join(BUILD_ROOT, decodeURIComponent(rel));
     if (!fs.existsSync(file)) return route.fulfill({ status: 404, body: '' });
     return route.fulfill({ body: fs.readFileSync(file), contentType: file.endsWith('.js') ? 'application/javascript' : file.endsWith('.css') ? 'text/css' : 'text/html' });
   });
