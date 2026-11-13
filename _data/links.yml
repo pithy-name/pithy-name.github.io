@@ -1,0 +1,5 @@
+# External profile URLs: the one place they live. Rendered into the footer (_includes/footer.html)
+# and into assets/components.js (SITE_LINKS), which builds the contact buttons and Substack CTA.
+linkedin: https://www.linkedin.com/in/annakalil/
+substack: https://crosstrafficdoesnotstop.substack.com/notes
+github: https://github.com/pithy-name/
