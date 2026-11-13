@@ -882,6 +882,11 @@ img {
   line-height: 1.7;
 }
 
+/* On the off-white sections the callout's own background would vanish; invert it. */
+.section--off .article__callout {
+  background: var(--ivory);
+}
+
 .article ol,
 .article ul {
   padding-left: 1.4rem;
