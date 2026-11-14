@@ -1,0 +1,51 @@
+name: PR 19 visual check (one-off)
+
+# Throwaway branch only: screenshots PR #19's Jekyll build and the live site, page by page,
+# and uploads both plus pixel diffs. Never merged; the permanent version is PIT-595.
+
+on:
+  push:
+    branches: [scratch/pr19-visual-check]
+
+permissions:
+  contents: read
+
+jobs:
+  visual:
+    name: Visual diff vs live site
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Build the site with Jekyll
+        run: bundle exec jekyll build
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm i --no-save pixelmatch@5.3.0 pngjs@7.0.0
+
+      - name: Install browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Screenshot and diff
+        run: node .github/visual-check/visual-check.mjs
+
+      - name: Upload screenshots and diffs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-check
+          path: visual/
+          retention-days: 7
