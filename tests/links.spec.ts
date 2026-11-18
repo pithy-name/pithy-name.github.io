@@ -36,7 +36,7 @@ test.describe('@links', () => {
   }
 
   for (const page of sitePages()) {
-    test(`JS-injected social links present in footer — ${page}`, async ({ page: pw }) => {
+    test(`social links present in footer — ${page}`, async ({ page: pw }) => {
       await pw.goto(`/${page}`);
       const footer = pw.locator('#site-footer');
       await expect(footer.locator('a[href*="linkedin.com"]'), 'LinkedIn').toHaveCount(1);

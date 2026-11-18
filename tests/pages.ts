@@ -4,6 +4,9 @@ import path from 'node:path';
 /** Repo root = one level up from tests/. */
 export const SITE_ROOT = path.resolve(__dirname, '..');
 
+/** Jekyll build output: what is actually served (and what GitHub Pages publishes). */
+export const BUILD_ROOT = path.join(SITE_ROOT, '_site');
+
 /** Every servable HTML page, discovered from disk so new pages are covered automatically. */
 export function sitePages(): string[] {
   const pages = ['index.html', '404.html'];

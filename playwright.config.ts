@@ -1,10 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright tests for the static site: layout and functionality in Chromium, layout only
+ * Playwright tests for the site: layout and functionality in Chromium, layout only
  * in WebKit. No visual/screenshot baselines (deliberate — those churn on every design
  * change). Tags and what each covers: tests/README.md.
- * Serves the repo root with Python's http.server so file:// quirks don't hide bugs.
+ * Builds the site with Jekyll and serves _site/ with Python's http.server, so tests check
+ * what GitHub Pages publishes and file:// quirks don't hide bugs.
  */
 export default defineConfig({
   testDir: './tests',
@@ -23,10 +24,11 @@ export default defineConfig({
     { name: 'webkit-iphone', use: { ...devices['iPhone 17e'] }, grep: /@responsive|@slant/ },
   ],
   webServer: {
-    command: 'python3 -m http.server 8099 --bind 127.0.0.1',
+    // Build the site with Jekyll (same build GitHub Pages runs), then serve the output.
+    command: 'bundle exec jekyll build && python3 -m http.server 8099 --bind 127.0.0.1 --directory _site',
     url: 'http://127.0.0.1:8099/index.html',
     // Never reuse: this repo runs several worktrees, and a stale server on 8099 would test the wrong tree.
     reuseExistingServer: false,
-    timeout: 30_000,
+    timeout: 120_000,
   },
 });

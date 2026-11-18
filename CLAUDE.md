@@ -1,6 +1,12 @@
 # pithy-name.github.io
 
-Static personal site, served by GitHub Pages from `main`. No build step for the site itself: edit the HTML/CSS directly and it publishes as-is. The only tooling is the test suite below.
+Personal site, served by GitHub Pages from `main`, which builds it with Jekyll. Shared markup (`<head>`, skip link, footer, script tags) lives once in `_layouts/` and `_includes/`; each page is HTML with front matter that supplies its title and meta. Edit the footer in `_includes/footer.html` only. The `Gemfile` pins the same `github-pages` gem Pages builds with, so the CI build matches the deployed site.
+
+## Build
+
+GitHub Pages builds the site with Jekyll on every push to `main`. CI builds it the same way
+(Ruby 3.3 and the pinned `github-pages` gem, via `ruby/setup-ruby`) before both test jobs,
+so the tests check the built `_site/`. Nothing is built or installed locally.
 
 ## Fresh-clone setup (required before any push)
 
@@ -21,7 +27,8 @@ Without the token file, every push is refused. The hook scans added lines, commi
 Playwright tests (`tests/`): layout and functionality in Chromium, layout only in WebKit.
 No screenshot baselines. Tags and what each covers: `tests/README.md`. Every page is
 tested: `index.html`, `404.html` and each `work/*.html`, found on disk, so a new work page
-is covered without editing tests.
+is covered without editing tests. Tests run against the Jekyll-built `_site/`, which is
+what gets published.
 
 `.github/workflows/ci.yml` runs two jobs on every PR into `main`, "Playwright (Chromium)"
 (every test) and "Playwright (WebKit)" (layout tests only); both are required checks.
@@ -34,9 +41,10 @@ Chrome, headless, with a throwaway profile; nothing is installed locally.
 
 ## Layout
 
-- `index.html` — home page: hero, About, Experience, Selected Work (cards grouped by subhead), Writing, Contact. `404.html`.
-- `work/` — one article page per Selected Work card, sharing the `article-hero` / `article` classes. Add the card on `index.html`, the page here, and the URL to `sitemap.xml` together.
-- `style.css` — all styles, CSS custom properties at the top. `assets/components.js` — JS-rendered footer, contact buttons, Substack CTA; `SITE_LINKS` is the single place external profile URLs live. `assets/*.svg` — brand motifs.
+- `_config.yml` — Jekyll config; its `exclude:` keeps repo tooling (tests, scripts, `CLAUDE.md`, package files) out of the published site. `_layouts/default.html` — the page shell. `_includes/footer.html` — the one footer. `_data/links.yml` — the one place external profile URLs live (footer and `SITE_LINKS`).
+- `index.html` — home page: hero, About, Experience, Selected Work (cards grouped by subhead), Writing, Contact. `404.html`. Both start with front matter (`layout: default`, `title`, and for indexed pages `description` plus optional `og_title` / `og_description` / `og_type`).
+- `work/` — one article page per Selected Work card, sharing the `article-hero` / `article` classes. Add the card on `index.html`, the page here (with front matter), and the URL to `sitemap.xml` together. Use root-absolute paths in layouts; page bodies keep their relative links.
+- `style.css` — all styles, CSS custom properties at the top. `assets/components.js` — contact buttons, Substack CTA, analytics; Jekyll fills `SITE_LINKS` from `_data/links.yml`. `assets/*.svg` — brand motifs.
 - `robots.txt` allows ordinary search engines and AI search/user fetchers, blocks AI training and bulk-scraping crawlers (list derived from the open-source ai.robots.txt project), and points at the sitemap. Tested by `tests/robots.spec.ts`.
 - `docs/` is gitignored: planning specs and anything stashed for review (`docs/_trash-review/`) live there, never published. Nothing is deleted from this repo; it is moved there and surfaced for the owner.
 - `.claude/worktrees/` — one worktree per branch, git-excluded. Main checkout stays on `main`.
