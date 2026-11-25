@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const NOTION = 'https://annakalil.notion.site/';
+const NOTION = 'https://thin-diplodocus-f24.notion.site/Anna-Kalil-Some-Things-I-ve-Built-415f3b94dc028081898fdc3f9ac2e3b7';
 
 // Selected Work opens with a callout (same style as the S.L.A.N.T. page's Substack link)
 // that sends the reader to the Notion portfolio. It must stay visible as a box on the
