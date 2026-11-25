@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
-import { SITE_ROOT } from './pages';
+import { BUILD_ROOT } from './pages';
 
 const LIVE = 'https://pithy-name.github.io';
 const STAGING = 'http://staging.test:8088';
@@ -10,12 +10,12 @@ const STAGING = 'http://staging.test:8088';
 async function serveLikePages(pw: Page, origin: string) {
   await pw.route(`${origin}/**`, (route) => {
     const rel = new URL(route.request().url()).pathname.replace(/^\//, '') || 'index.html';
-    const file = path.join(SITE_ROOT, decodeURIComponent(rel));
+    const file = path.join(BUILD_ROOT, decodeURIComponent(rel));
     if (fs.existsSync(file) && fs.statSync(file).isFile()) {
       const type = file.endsWith('.html') ? 'text/html' : file.endsWith('.css') ? 'text/css' : 'application/javascript';
       return route.fulfill({ body: fs.readFileSync(file), contentType: type });
     }
-    return route.fulfill({ status: 404, body: fs.readFileSync(path.join(SITE_ROOT, '404.html')), contentType: 'text/html' });
+    return route.fulfill({ status: 404, body: fs.readFileSync(path.join(BUILD_ROOT, '404.html')), contentType: 'text/html' });
   });
   await pw.route('**://gc.zgo.at/**', (route) => route.fulfill({ body: '', contentType: 'application/javascript' }));
 }

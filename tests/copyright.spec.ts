@@ -4,8 +4,8 @@ import { sitePages } from './pages';
 const NOTICE = /©\s*2026 Anna Kalil\.\s*All rights reserved\./;
 const ASK = /permission to reproduce/i;
 
-// Every page carries a copyright notice in its footer, both as rendered by JavaScript and in
-// the <noscript> fallback (so crawlers and no-JS visitors see it too).
+// Every page carries a copyright notice in its footer. The footer is static HTML, so it is
+// there with JavaScript off too (crawlers and no-JS visitors see it).
 test.describe('@links copyright notice', () => {
   for (const page of sitePages()) {
     test(`footer copyright notice — ${page}`, async ({ page: pw }) => {
